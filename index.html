@@ -1076,6 +1076,12 @@ async function loadAdminFixtures() {
     let actionHTML = "";
 
 
+    /*
+      SCHEDULED:
+      - Weka matokeo
+      - Futa fixture
+    */
+
     if (fixture.status === "scheduled") {
 
       actionHTML = `
@@ -1103,21 +1109,34 @@ async function loadAdminFixtures() {
           📊 HIFADHI MATOKEO
         </button>
 
+        <button
+          class="delete"
+          onclick="deleteFixture(${fixture.id})"
+        >
+          🗑️ FUTA FIXTURE
+        </button>
+
       `;
 
     } else {
+
+      /*
+        COMPLETED:
+        - Onyesha matokeo
+        - Futa fixture
+      */
 
       actionHTML = `
 
         <strong>
           🏁 Matokeo:
           ${fixture.player1_score ?? 0}
-          - 
+          -
           ${fixture.player2_score ?? 0}
         </strong>
 
         <button
-          class="result"
+          class="delete"
           onclick="deleteFixture(${fixture.id})"
         >
           🗑️ FUTA FIXTURE
@@ -1293,6 +1312,9 @@ async function deleteFixture(fixtureId) {
 
 
   loadAdminFixtures();
+  loadPublicFixtures();
+  loadPublicResults();
+  loadLeagueTable();
 }
 
 
