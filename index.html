@@ -137,9 +137,7 @@
       padding-bottom: 8px;
     }
 
-    /* =========================
-       MATANGAZO YA MECHI
-    ========================= */
+    /* MATANGAZO YA MECHI */
 
     .match-announcements {
       background: linear-gradient(
@@ -205,9 +203,7 @@
       border-radius: 10px;
     }
 
-    /* =========================
-       ZAWADI
-    ========================= */
+    /* ZAWADI */
 
     .prize-card {
       text-align: center;
@@ -340,6 +336,86 @@
       font-weight: bold;
     }
 
+    /* PLAYER ACCOUNT */
+
+    .account-header {
+      background: linear-gradient(
+        135deg,
+        #075e2b,
+        #0b8f45
+      );
+      color: white;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .account-header h3 {
+      margin: 5px 0;
+      font-size: 24px;
+    }
+
+    .account-code-box {
+      background: #fff3cd;
+      border: 2px dashed #075e2b;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .account-code {
+      font-size: 25px;
+      font-weight: bold;
+      color: #075e2b;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .stat-box {
+      background: #f4f7f5;
+      border-radius: 12px;
+      padding: 15px 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #075e2b;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .account-match {
+      background: #f4f7f5;
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .account-position {
+      font-size: 28px;
+      font-weight: bold;
+      color: #075e2b;
+      text-align: center;
+      margin: 10px 0;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -354,8 +430,6 @@
   Jiunge na mashindano ya 1v1 ya eFootball.
 </p>
 
-<!-- MATANGAZO YA MECHI -->
-
 <div class="match-announcements">
 
   <h3>
@@ -368,9 +442,12 @@
 
 </div>
 
-
 <button onclick="showRegister()">
   📝 JISAJILI
+</button>
+
+<button onclick="showPlayerAccount()">
+  👤 AKAUNTI YANGU
 </button>
 
 <button onclick="showLeagueTable()">
@@ -420,12 +497,21 @@
 >
 
 <div class="notice">
+
   ⚠️ Tumia akaunti yako mwenyewe ya
   eFootball/KONAMI na kikosi chako mwenyewe.
 
   <br><br>
 
   🚫 Usiweke password yako hapa.
+
+  <br><br>
+
+  🔐 Baada ya usajili utapewa
+  <strong>Account Code</strong>.
+  Hifadhi code hiyo kwa ajili ya kuingia
+  kwenye AKAUNTI YANGU.
+
 </div>
 
 <label>
@@ -444,6 +530,38 @@
 <button onclick="submitRegistration()">
   ✅ JISAJILI
 </button>
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- PLAYER ACCOUNT -->  <div class="card hidden" id="playerAccountPage"><h2 class="section-title">
+  👤 AKAUNTI YANGU
+</h2>
+
+<div class="notice">
+  🔐 Ingiza Account Code uliyopewa wakati
+  wa kujisajili.
+</div>
+
+<label>
+  Account Code
+</label>
+
+<input
+  id="accountCodeLogin"
+  type="text"
+  placeholder="Mfano: EFABC123"
+  style="text-transform:uppercase;"
+>
+
+<button onclick="loadPlayerAccount()">
+  🔎 ANGALIA AKAUNTI
+</button>
+
+<div id="playerAccount">
+  Ingiza Account Code yako hapo juu.
+</div>
 
 <button onclick="goHome()">
   ⬅️ RUDI
@@ -475,7 +593,9 @@
   ⬅️ RUDI
 </button>
 
-  </div>  <!-- PUBLIC FIXTURES -->  <div class="card hidden" id="fixturesPage"><h2 class="section-title">📅 FIXTURES</h2>
+  </div>  <!-- PUBLIC FIXTURES -->  <div class="card hidden" id="fixturesPage"><h2 class="section-title">
+  📅 FIXTURES
+</h2>
 
 <div id="publicFixtures">
   ⏳ Inapakia fixtures...
@@ -489,7 +609,9 @@
   ⬅️ RUDI
 </button>
 
-  </div>  <!-- PUBLIC RESULTS -->  <div class="card hidden" id="resultsPage"><h2 class="section-title">📊 RESULTS</h2>
+  </div>  <!-- PUBLIC RESULTS -->  <div class="card hidden" id="resultsPage"><h2 class="section-title">
+  📊 RESULTS
+</h2>
 
 <div id="publicResults">
   ⏳ Inapakia results...
@@ -512,9 +634,6 @@
   watakaomaliza ligi katika nafasi zilizoainishwa hapa.
   💰 Zawadi ni kwa Shilingi za Tanzania.
 </div>
-
-
-<!-- FIRST PRIZE -->
 
 <div class="prize-card">
 
@@ -542,8 +661,6 @@
 </div>
 
 
-<!-- SECOND PRIZE -->
-
 <div class="prize-card">
 
   <h3>🥈 NAFASI YA 2</h3>
@@ -552,19 +669,19 @@
 
     <img
       src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
-      alt="Noti ya Shilingi 5,000 ya Tanzania"
+      alt="Noti ya Shilingi 5,000"
       loading="lazy"
     >
 
     <img
       src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
-      alt="Noti ya Shilingi 5,000 ya Tanzania"
+      alt="Noti ya Shilingi 5,000"
       loading="lazy"
     >
 
     <img
       src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
-      alt="Noti ya Shilingi 5,000 ya Tanzania"
+      alt="Noti ya Shilingi 5,000"
       loading="lazy"
     >
 
@@ -585,8 +702,6 @@
 </div>
 
 
-<!-- THIRD PRIZE -->
-
 <div class="prize-card">
 
   <h3>🥉 NAFASI YA 3</h3>
@@ -595,19 +710,19 @@
 
     <img
       src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-      alt="Noti ya Shilingi 2,000 ya Tanzania"
+      alt="Noti ya Shilingi 2,000"
       loading="lazy"
     >
 
     <img
       src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-      alt="Noti ya Shilingi 2,000 ya Tanzania"
+      alt="Noti ya Shilingi 2,000"
       loading="lazy"
     >
 
     <img
       src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-      alt="Noti ya Shilingi 2,000 ya Tanzania"
+      alt="Noti ya Shilingi 2,000"
       loading="lazy"
     >
 
@@ -640,7 +755,6 @@
 
 </div>
 
-
 <div class="notice">
 
   ℹ️ Nafasi za mwisho zitaamuliwa
@@ -648,7 +762,6 @@
   kwenye League Table.
 
 </div>
-
 
 <button onclick="goHome()">
   ⬅️ RUDI
@@ -687,8 +800,6 @@
 
 <hr>
 
-
-<!-- MANAGE PRIZES -->
 <h3 class="section-title">
   🎁 SIMAMIA ZAWADI
 </h3>
@@ -711,7 +822,6 @@
     placeholder="100000"
   >
 
-
   <label>
     🥈 Zawadi ya Nafasi ya 2
   </label>
@@ -722,7 +832,6 @@
     min="0"
     placeholder="50000"
   >
-
 
   <label>
     🥉 Zawadi ya Nafasi ya 3
@@ -735,7 +844,6 @@
     placeholder="25000"
   >
 
-
   <label>
     📅 Tarehe ya mwisho ya ligi
   </label>
@@ -744,7 +852,6 @@
     id="adminEndDate"
     type="date"
   >
-
 
   <button onclick="savePrizes()">
     💾 HIFADHI ZAWADI
@@ -756,11 +863,8 @@
 
 </div>
 
-
 <hr>
 
-
-<!-- PLAYERS -->
 <h3 class="section-title">
   👥 Wachezaji Waliojisajili
 </h3>
@@ -775,8 +879,6 @@
 
 <hr>
 
-
-<!-- CREATE FIXTURE -->
 <h3 class="section-title">
   📅 TENGENEZA FIXTURE
 </h3>
@@ -810,8 +912,6 @@
 
 <hr>
 
-
-<!-- ADMIN FIXTURES -->
 <h3 class="section-title">
   📅 FIXTURES ZILIZOTENGENEZWA
 </h3>
@@ -880,10 +980,8 @@ function startLeagueRealtime() {
           payload
         );
 
-        /* MATANGAZO */
         loadMatchAnnouncements();
 
-        /* LEAGUE TABLE */
         const leaguePage =
           document.getElementById("leaguePage");
 
@@ -894,7 +992,6 @@ function startLeagueRealtime() {
           loadLeagueTable();
         }
 
-        /* RESULTS */
         const resultsPage =
           document.getElementById("resultsPage");
 
@@ -905,7 +1002,6 @@ function startLeagueRealtime() {
           loadPublicResults();
         }
 
-        /* FIXTURES */
         const fixturesPage =
           document.getElementById("fixturesPage");
 
@@ -916,7 +1012,25 @@ function startLeagueRealtime() {
           loadPublicFixtures();
         }
 
-        /* ADMIN */
+        const accountPage =
+          document.getElementById("playerAccountPage");
+
+        if (
+          accountPage &&
+          !accountPage.classList.contains("hidden")
+        ) {
+
+          const savedCode =
+            document.getElementById(
+              "accountCodeLogin"
+            ).value.trim();
+
+          if (savedCode) {
+            loadPlayerAccount();
+          }
+
+        }
+
         const adminPanel =
           document.getElementById("adminPanel");
 
@@ -963,14 +1077,11 @@ async function loadMatchAnnouncements() {
     return;
   }
 
-
   box.innerHTML =
     "⏳ Inapakia matangazo...";
 
-
   const now =
     new Date().toISOString();
-
 
   const { data, error } =
     await supabaseClient
@@ -995,7 +1106,6 @@ async function loadMatchAnnouncements() {
     })
     .limit(5);
 
-
   if (error) {
 
     console.error(
@@ -1012,7 +1122,6 @@ async function loadMatchAnnouncements() {
     return;
   }
 
-
   if (!data || data.length === 0) {
 
     box.innerHTML = `
@@ -1026,9 +1135,7 @@ async function loadMatchAnnouncements() {
     return;
   }
 
-
   box.innerHTML = "";
-
 
   data.forEach((fixture, index) => {
 
@@ -1037,12 +1144,10 @@ async function loadMatchAnnouncements() {
       ? fixture.player1.player_name
       : "Mchezaji 1";
 
-
     const player2Name =
       fixture.player2
       ? fixture.player2.player_name
       : "Mchezaji 2";
-
 
     const date =
       fixture.match_date
@@ -1051,10 +1156,8 @@ async function loadMatchAnnouncements() {
         )
       : null;
 
-
     let dateText =
       "Haijawekwa";
-
 
     if (date) {
 
@@ -1078,13 +1181,11 @@ async function loadMatchAnnouncements() {
 
     }
 
-
     const div =
       document.createElement("div");
 
     div.className =
       "match-ad";
-
 
     div.innerHTML = `
 
@@ -1116,11 +1217,26 @@ async function loadMatchAnnouncements() {
 
     `;
 
-
     box.appendChild(div);
 
   });
 
+}
+
+
+/* =========================
+   GENERATE ACCOUNT CODE
+========================= */
+
+function generateAccountCode() {
+
+  const randomPart =
+    Math.random()
+    .toString(36)
+    .substring(2, 8)
+    .toUpperCase();
+
+  return "EF" + randomPart;
 }
 
 
@@ -1146,7 +1262,6 @@ async function submitRegistration() {
     document.getElementById("ownAccount")
     .checked;
 
-
   if (!playerName || !username || !whatsapp) {
 
     alert(
@@ -1155,7 +1270,6 @@ async function submitRegistration() {
 
     return;
   }
-
 
   if (!ownAccount) {
 
@@ -1167,33 +1281,96 @@ async function submitRegistration() {
   }
 
 
-  const { error } =
-    await supabaseClient
-    .from("players")
-    .insert([
-      {
-        player_name: playerName,
-        username: username,
-        whatsapp: whatsapp,
-        own_account: true
-      }
-    ]);
+  let accountCode =
+    generateAccountCode();
+
+  let success = false;
+  let lastError = null;
 
 
-  if (error) {
+  /* Jaribu mara kadhaa kama code imejirudia */
 
-    console.error(error);
+  for (let attempt = 0; attempt < 5; attempt++) {
+
+    const { error } =
+      await supabaseClient
+      .from("players")
+      .insert([
+        {
+          player_name: playerName,
+          username: username,
+          whatsapp: whatsapp,
+          own_account: true,
+          account_code: accountCode
+        }
+      ]);
+
+
+    if (!error) {
+
+      success = true;
+      break;
+
+    }
+
+
+    lastError = error;
+
+
+    /* Kama account code imejirudia, tengeneza nyingine */
+
+    if (
+      error.code === "23505"
+    ) {
+
+      accountCode =
+        generateAccountCode();
+
+      continue;
+
+    }
+
+
+    break;
+
+  }
+
+
+  if (!success) {
+
+    console.error(
+      "REGISTRATION ERROR:",
+      lastError
+    );
 
     alert(
-      "❌ Usajili umeshindikana. Jaribu tena."
+      "❌ Usajili umeshindikana. Jaribu tena.\n\n" +
+      (
+        lastError
+        ? lastError.message
+        : ""
+      )
     );
 
     return;
   }
 
 
+  /* Hifadhi code kwenye simu */
+
+  localStorage.setItem(
+    "efootball_player_account_code",
+    accountCode
+  );
+
+
   alert(
-    "🎉 Umefanikiwa kujisajili kwenye eFOOTBALL LEAGUE!"
+    "🎉 Umefanikiwa kujisajili kwenye eFOOTBALL LEAGUE!\n\n" +
+    "🔐 ACCOUNT CODE YAKO:\n\n" +
+    accountCode +
+    "\n\n" +
+    "⚠️ HIFADHI CODE HII.\n" +
+    "Utaitumia kwenye AKAUNTI YANGU."
   );
 
 
@@ -1206,7 +1383,820 @@ async function submitRegistration() {
   document.getElementById("ownAccount").checked = false;
 
 
+  document.getElementById(
+    "accountCodeLogin"
+  ).value = accountCode;
+
+
   goHome();
+
+}
+
+
+/* =========================
+   SHOW PLAYER ACCOUNT
+========================= */
+
+function showPlayerAccount() {
+
+  hideAllPages();
+
+  document.getElementById(
+    "playerAccountPage"
+  )
+  .classList.remove("hidden");
+
+
+  const savedCode =
+    localStorage.getItem(
+      "efootball_player_account_code"
+    );
+
+
+  if (savedCode) {
+
+    document.getElementById(
+      "accountCodeLogin"
+    ).value =
+      savedCode;
+
+  }
+
+}
+
+
+/* =========================
+   LOAD PLAYER ACCOUNT
+========================= */
+
+async function loadPlayerAccount() {
+
+  const input =
+    document.getElementById(
+      "accountCodeLogin"
+    );
+
+  const box =
+    document.getElementById(
+      "playerAccount"
+    );
+
+
+  const code =
+    input.value
+    .trim()
+    .toUpperCase();
+
+
+  if (!code) {
+
+    alert(
+      "⚠️ Weka Account Code yako."
+    );
+
+    return;
+  }
+
+
+  box.innerHTML =
+    "⏳ Inapakia akaunti yako...";
+
+
+  const { data: player, error } =
+    await supabaseClient
+    .from("players")
+    .select(`
+      id,
+      player_name,
+      username,
+      status,
+      account_code
+    `)
+    .eq("account_code", code)
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "ACCOUNT ERROR:",
+      error
+    );
+
+    box.innerHTML =
+      "❌ Imeshindikana kupata akaunti.";
+
+    return;
+  }
+
+
+  if (!player) {
+
+    box.innerHTML = `
+      <div class="notice">
+        ❌ Account Code haijapatikana.
+        <br><br>
+        Hakikisha umeandika code sahihi.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  localStorage.setItem(
+    "efootball_player_account_code",
+    code
+  );
+
+
+  /* Pata fixtures za mchezaji */
+
+  const { data: fixtures, error: fixturesError } =
+    await supabaseClient
+    .from("fixtures")
+    .select(`
+      id,
+      match_date,
+      status,
+      player1_id,
+      player2_id,
+      player1_score,
+      player2_score,
+      player1:players!fixtures_player1_id_fkey(
+        player_name,
+        username
+      ),
+      player2:players!fixtures_player2_id_fkey(
+        player_name,
+        username
+      )
+    `)
+    .or(
+      `player1_id.eq.${player.id},player2_id.eq.${player.id}`
+    )
+    .order("match_date", {
+      ascending: false
+    });
+
+
+  if (fixturesError) {
+
+    console.error(
+      "PLAYER FIXTURES ERROR:",
+      fixturesError
+    );
+
+    box.innerHTML =
+      "❌ Imeshindikana kupata mechi za akaunti.";
+
+    return;
+  }
+
+
+  let played = 0;
+  let wins = 0;
+  let draws = 0;
+  let losses = 0;
+  let gf = 0;
+  let ga = 0;
+  let points = 0;
+
+
+  const completedFixtures =
+    (fixtures || []).filter(
+      fixture =>
+        fixture.status === "completed"
+    );
+
+
+  completedFixtures.forEach(
+    fixture => {
+
+      const isPlayer1 =
+        Number(fixture.player1_id) ===
+        Number(player.id);
+
+
+      const scoreFor =
+        isPlayer1
+        ? Number(
+            fixture.player1_score ?? 0
+          )
+        : Number(
+            fixture.player2_score ?? 0
+          );
+
+
+      const scoreAgainst =
+        isPlayer1
+        ? Number(
+            fixture.player2_score ?? 0
+          )
+        : Number(
+            fixture.player1_score ?? 0
+          );
+
+
+      played++;
+
+      gf += scoreFor;
+
+      ga += scoreAgainst;
+
+
+      if (scoreFor > scoreAgainst) {
+
+        wins++;
+        points += 3;
+
+      }
+
+      else if (
+        scoreFor === scoreAgainst
+      ) {
+
+        draws++;
+        points++;
+
+      }
+
+      else {
+
+        losses++;
+
+      }
+
+    }
+  );
+
+
+  const gd =
+    gf - ga;
+
+
+  /* Pata nafasi ya mchezaji */
+
+  const {
+    data: allPlayers,
+    error: allPlayersError
+  } =
+    await supabaseClient
+    .from("players")
+    .select(
+      "id, player_name"
+    )
+    .eq("status", "approved");
+
+
+  let position =
+    "-";
+
+
+  if (!allPlayersError && allPlayers) {
+
+    const stats = {};
+
+
+    allPlayers.forEach(p => {
+
+      stats[p.id] = {
+
+        points: 0,
+
+        gf: 0,
+
+        ga: 0,
+
+        gd: 0
+
+      };
+
+    });
+
+
+    completedFixtures.forEach(
+      fixture => {
+
+        if (
+          !stats[fixture.player1_id] ||
+          !stats[fixture.player2_id]
+        ) {
+          return;
+        }
+
+
+        const s1 =
+          Number(
+            fixture.player1_score ?? 0
+          );
+
+        const s2 =
+          Number(
+            fixture.player2_score ?? 0
+          );
+
+
+        stats[
+          fixture.player1_id
+        ].gf += s1;
+
+        stats[
+          fixture.player1_id
+        ].ga += s2;
+
+
+        stats[
+          fixture.player2_id
+        ].gf += s2;
+
+        stats[
+          fixture.player2_id
+        ].ga += s1;
+
+
+        if (s1 > s2) {
+
+          stats[
+            fixture.player1_id
+          ].points += 3;
+
+        }
+
+        else if (s2 > s1) {
+
+          stats[
+            fixture.player2_id
+          ].points += 3;
+
+        }
+
+        else {
+
+          stats[
+            fixture.player1_id
+          ].points += 1;
+
+          stats[
+            fixture.player2_id
+          ].points += 1;
+
+        }
+
+      }
+    );
+
+
+    const ranking =
+      allPlayers.map(p => {
+
+        stats[p.id].gd =
+          stats[p.id].gf -
+          stats[p.id].ga;
+
+        return {
+
+          id: p.id,
+
+          name: p.player_name,
+
+          points: stats[p.id].points,
+
+          gf: stats[p.id].gf,
+
+          ga: stats[p.id].ga,
+
+          gd: stats[p.id].gd
+
+        };
+
+      });
+
+
+    ranking.sort((a, b) => {
+
+      if (
+        b.points !== a.points
+      ) {
+        return b.points - a.points;
+      }
+
+      if (
+        b.gd !== a.gd
+      ) {
+        return b.gd - a.gd;
+      }
+
+      if (
+        b.gf !== a.gf
+      ) {
+        return b.gf - a.gf;
+      }
+
+      return a.name.localeCompare(
+        b.name
+      );
+
+    });
+
+
+    const index =
+      ranking.findIndex(
+        p =>
+          Number(p.id) ===
+          Number(player.id)
+      );
+
+
+    if (index !== -1) {
+
+      position =
+        index + 1;
+
+    }
+
+  }
+
+
+  /* Mechi zijazo */
+
+  const upcoming =
+    (fixtures || [])
+    .filter(
+      fixture =>
+        fixture.status === "scheduled" &&
+        fixture.match_date &&
+        new Date(
+          fixture.match_date
+        ) >= new Date()
+    )
+    .sort(
+      (a, b) =>
+        new Date(a.match_date) -
+        new Date(b.match_date)
+    );
+
+
+  let upcomingHTML = "";
+
+
+  if (upcoming.length === 0) {
+
+    upcomingHTML = `
+      <div class="notice">
+        📭 Huna mechi ijayo iliyopangwa kwa sasa.
+      </div>
+    `;
+
+  } else {
+
+    upcoming
+    .forEach(fixture => {
+
+      const isPlayer1 =
+        Number(fixture.player1_id) ===
+        Number(player.id);
+
+
+      const opponent =
+        isPlayer1
+        ? fixture.player2
+        : fixture.player1;
+
+
+      const opponentName =
+        opponent
+        ? opponent.player_name
+        : "Mchezaji mwingine";
+
+
+      const date =
+        new Date(
+          fixture.match_date
+        ).toLocaleString(
+          "sw-TZ"
+        );
+
+
+      upcomingHTML += `
+
+        <div class="account-match">
+
+          <strong>
+            📅 MECHI IJAYO
+          </strong>
+
+          <br><br>
+
+          ⚽
+          ${escapeHTML(player.player_name)}
+
+          <div class="versus">
+            VS
+          </div>
+
+          ⚽
+          ${escapeHTML(opponentName)}
+
+          <br><br>
+
+          🕐
+          ${escapeHTML(date)}
+
+        </div>
+
+      `;
+
+    });
+
+  }
+
+
+  /* Matokeo ya mchezaji */
+
+  let resultsHTML = "";
+
+
+  if (
+    completedFixtures.length === 0
+  ) {
+
+    resultsHTML = `
+      <div class="notice">
+        📭 Bado hujacheza mechi yoyote.
+      </div>
+    `;
+
+  } else {
+
+    completedFixtures
+    .forEach(fixture => {
+
+      const isPlayer1 =
+        Number(fixture.player1_id) ===
+        Number(player.id);
+
+
+      const myName =
+        isPlayer1
+        ? fixture.player1?.player_name
+        : fixture.player2?.player_name;
+
+
+      const opponent =
+        isPlayer1
+        ? fixture.player2?.player_name
+        : fixture.player1?.player_name;
+
+
+      const myScore =
+        isPlayer1
+        ? Number(
+            fixture.player1_score ?? 0
+          )
+        : Number(
+            fixture.player2_score ?? 0
+          );
+
+
+      const opponentScore =
+        isPlayer1
+        ? Number(
+            fixture.player2_score ?? 0
+          )
+        : Number(
+            fixture.player1_score ?? 0
+          );
+
+
+      let resultText = "";
+      let resultClass = "";
+
+
+      if (
+        myScore > opponentScore
+      ) {
+
+        resultText =
+          "✅ USHINDI";
+
+        resultClass =
+          "color:#075e2b;";
+
+      }
+
+      else if (
+        myScore === opponentScore
+      ) {
+
+        resultText =
+          "🤝 SARE";
+
+        resultClass =
+          "color:#b8860b;";
+
+      }
+
+      else {
+
+        resultText =
+          "❌ KUFUNGWA";
+
+        resultClass =
+          "color:#b00020;";
+
+      }
+
+
+      const date =
+        fixture.match_date
+        ? new Date(
+            fixture.match_date
+          ).toLocaleString(
+            "sw-TZ"
+          )
+        : "";
+
+
+      resultsHTML += `
+
+        <div class="account-match">
+
+          <strong>
+            ${escapeHTML(myName || player.player_name)}
+          </strong>
+
+          <div class="versus">
+            ${myScore}
+            -
+            ${opponentScore}
+          </div>
+
+          <strong>
+            ${escapeHTML(opponent || "Mchezaji mwingine")}
+          </strong>
+
+          <br><br>
+
+          <span style="font-weight:bold;${resultClass}">
+            ${resultText}
+          </span>
+
+          <br>
+
+          <small>
+            📅 ${escapeHTML(date)}
+          </small>
+
+        </div>
+
+      `;
+
+    });
+
+  }
+
+
+  box.innerHTML = `
+
+    <div class="account-header">
+
+      <div style="font-size:45px;">
+        👤
+      </div>
+
+      <h3>
+        ${escapeHTML(player.player_name)}
+      </h3>
+
+      <div>
+        🎮 ${escapeHTML(player.username)}
+      </div>
+
+      <div style="margin-top:8px;">
+        Status:
+        <strong>
+          ${escapeHTML(player.status)}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="account-code-box">
+
+      🔐 <strong>ACCOUNT CODE</strong>
+
+      <div class="account-code">
+        ${escapeHTML(player.account_code)}
+      </div>
+
+      <small>
+        Hifadhi code hii kwa matumizi yako.
+      </small>
+
+    </div>
+
+
+    <div class="account-position">
+
+      🏆 Nafasi #${position}
+
+    </div>
+
+
+    <div class="stats-grid">
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${played}
+        </div>
+        <div class="stat-label">
+          ⚽ MECHI
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${wins}
+        </div>
+        <div class="stat-label">
+          ✅ USHINDI
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${draws}
+        </div>
+        <div class="stat-label">
+          🤝 SARE
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${losses}
+        </div>
+        <div class="stat-label">
+          ❌ KUFUNGWA
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${gf}
+        </div>
+        <div class="stat-label">
+          ⚽ GF
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${ga}
+        </div>
+        <div class="stat-label">
+          🥅 GA
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ${gd}
+        </div>
+        <div class="stat-label">
+          📊 GD
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-number">
+          ⭐ ${points}
+        </div>
+        <div class="stat-label">
+          POINTS
+        </div>
+      </div>
+
+    </div>
+
+
+    <h3 class="section-title">
+      📅 MECHI ZANGU ZIJAZO
+    </h3>
+
+    ${upcomingHTML}
+
+
+    <h3 class="section-title">
+      📊 MATOKEO YANGU
+    </h3>
+
+    ${resultsHTML}
+
+  `;
+
 }
 
 
@@ -1238,7 +2228,6 @@ async function adminLogin() {
     document.getElementById("adminPassword")
     .value;
 
-
   if (!email || !password) {
 
     alert(
@@ -1247,7 +2236,6 @@ async function adminLogin() {
 
     return;
   }
-
 
   const { data, error } =
     await supabaseClient.auth.signInWithPassword({
@@ -1337,6 +2325,7 @@ async function adminLogin() {
   await loadAdminFixtures();
 
   await loadAdminPrizes();
+
 }
 
 
@@ -1773,6 +2762,11 @@ async function loadPlayers() {
 
       <br>
 
+      <strong>Account Code:</strong>
+      ${escapeHTML(player.account_code || "Haipo")}
+
+      <br>
+
       <strong>Status:</strong>
       ${escapeHTML(player.status)}
 
@@ -1991,6 +2985,7 @@ async function createFixture() {
   await loadAdminFixtures();
   await loadPublicFixtures();
   await loadMatchAnnouncements();
+
 }
 
 
@@ -2267,6 +3262,7 @@ async function saveResult(fixtureId) {
   await loadLeagueTable();
   await loadPublicFixtures();
   await loadMatchAnnouncements();
+
 }
 
 
@@ -2320,6 +3316,7 @@ async function deleteFixture(fixtureId) {
   await loadPublicResults();
   await loadLeagueTable();
   await loadMatchAnnouncements();
+
 }
 
 
@@ -3160,6 +4157,9 @@ function hideAllPages() {
   document.getElementById("register")
     .classList.add("hidden");
 
+  document.getElementById("playerAccountPage")
+    .classList.add("hidden");
+
   document.getElementById("adminLogin")
     .classList.add("hidden");
 
@@ -3177,6 +4177,7 @@ function hideAllPages() {
 
   document.getElementById("leaguePage")
     .classList.add("hidden");
+
 }
 
 
@@ -3192,6 +4193,7 @@ async function goHome() {
     .classList.remove("hidden");
 
   await loadMatchAnnouncements();
+
 }
 
 
@@ -3204,6 +4206,7 @@ async function adminLogout() {
   await supabaseClient.auth.signOut();
 
   goHome();
+
 }
 
 
@@ -3227,6 +4230,7 @@ function escapeHTML(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+
 }
 
 
@@ -3246,6 +4250,7 @@ function escapeJS(value) {
     .replace(/"/g, '\\"')
     .replace(/\r/g, "\\r")
     .replace(/\n/g, "\\n");
+
 }
 
 
@@ -3254,6 +4259,38 @@ function escapeJS(value) {
 ========================= */
 
 loadMatchAnnouncements();
+
+
+/* Kama mchezaji tayari ana code,
+   ijaze kwenye Account page */
+
+window.addEventListener(
+  "load",
+  () => {
+
+    const savedCode =
+      localStorage.getItem(
+        "efootball_player_account_code"
+      );
+
+    if (savedCode) {
+
+      const input =
+        document.getElementById(
+          "accountCodeLogin"
+        );
+
+      if (input) {
+
+        input.value =
+          savedCode;
+
+      }
+
+    }
+
+  }
+);
 
 </script></body>
   </html>
