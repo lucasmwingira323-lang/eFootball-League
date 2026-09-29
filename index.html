@@ -5,267 +5,229 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>eFOOTBALL LEAGUE</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f2f5f8;
+      background: #f4f7f5;
       color: #111;
-      text-align: center;
     }
 
     header {
-      background: #111827;
+      background: #075e2b;
       color: white;
-      padding: 35px 15px;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 32px;
-    }
-
-    .subtitle {
-      margin-top: 10px;
-      font-size: 17px;
-    }
-
-    .buttons {
+      text-align: center;
       padding: 30px 15px;
     }
 
-    button {
-      width: 90%;
-      max-width: 350px;
-      padding: 16px;
-      margin: 8px;
-      border: none;
-      border-radius: 12px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
+    header h1 {
+      margin: 0;
+      font-size: 30px;
     }
 
-    .register {
-      background: #16a34a;
-      color: white;
+    header p {
+      margin-top: 8px;
     }
 
-    .table {
-      background: #2563eb;
-      color: white;
-    }
-
-    .fixtures {
-      background: #f59e0b;
-      color: white;
-    }
-
-    .results {
-      background: #7c3aed;
-      color: white;
-    }
-
-    #registerBox {
-      display: none;
-      background: white;
-      width: 90%;
+    .container {
       max-width: 500px;
-      margin: 0 auto 30px;
-      padding: 25px 10px;
-      border-radius: 18px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
-      box-sizing: border-box;
+      margin: 25px auto;
+      padding: 15px;
     }
 
-    #registerBox h2 {
-      margin-top: 0;
-      color: #111827;
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
 
-    .input {
-      width: 90%;
+    button {
+      width: 100%;
       padding: 14px;
-      margin: 7px auto;
+      border: none;
       border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      background: #075e2b;
+      color: white;
+      font-size: 17px;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 100%;
       box-sizing: border-box;
-      display: block;
+      padding: 13px;
+      margin-top: 8px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 9px;
+      font-size: 16px;
     }
 
-    .check-area {
-      width: 90%;
-      margin: 15px auto;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .submit-btn {
-      background: #16a34a;
-      color: white;
-      width: 90%;
-    }
-
-    .close-btn {
-      background: #6b7280;
-      color: white;
-      width: 90%;
+    label {
+      font-weight: bold;
     }
 
     .notice {
-      background: #fff7ed;
-      color: #9a3412;
+      background: #fff3cd;
       padding: 12px;
-      margin: 15px auto;
-      width: 90%;
       border-radius: 10px;
+      margin: 15px 0;
       font-size: 14px;
-      box-sizing: border-box;
+    }
+
+    .hidden {
+      display: none;
     }
 
     footer {
-      margin-top: 30px;
+      text-align: center;
       padding: 20px;
-      background: #111827;
-      color: white;
+      color: #666;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1>🏆 eFOOTBALL LEAGUE</h1>
-    <div class="subtitle">⚽ 1v1 Online Competition</div>
-  </header>
+<header>
+  <h1>🏆 eFOOTBALL LEAGUE</h1>
+  <p>⚽ 1v1 Online Competition</p>
+</header>
 
-  <div class="buttons">
+<div class="container">
 
-    <button class="register" onclick="showRegister()">
-      📝 JISAJILI
-    </button>
+  <div class="card" id="home">
+    <h2>Karibu eFOOTBALL LEAGUE</h2>
+    <p>Jiunge na mashindano ya 1v1 ya eFootball.</p>
 
-    <button class="table" onclick="showMessage('🏆 League Table itawekwa hapa.')">
+    <button onclick="showRegister()">📝 JISAJILI</button>
+    <button onclick="showMessage('🏆 League Table itakuja hapa.')">
       🏆 LEAGUE TABLE
     </button>
-
-    <button class="fixtures" onclick="showMessage('📅 Fixtures zitawekwa hapa.')">
+    <button onclick="showMessage('📅 Fixtures zitakuja hapa.')">
       📅 FIXTURES
     </button>
-
-    <button class="results" onclick="showMessage('📊 Results zitawekwa hapa.')">
+    <button onclick="showMessage('📊 Results zitaonekana hapa.')">
       📊 RESULTS
     </button>
-
   </div>
 
-  <!-- REGISTRATION FORM -->
+  <div class="card hidden" id="register">
 
-  <div id="registerBox">
+    <h2>📝 Usajili wa Mchezaji</h2>
 
-    <h2>📝 JISAJILI eFOOTBALL LEAGUE</h2>
+    <label>Jina Kamili</label>
+    <input id="playerName" type="text" placeholder="Andika jina lako">
+
+    <label>eFootball Username</label>
+    <input id="username" type="text" placeholder="Andika username yako">
+
+    <label>Namba ya WhatsApp</label>
+    <input id="whatsapp" type="tel" placeholder="Mfano: 07XXXXXXXX">
 
     <div class="notice">
-      ⚽ Tumia akaunti yako mwenyewe ya eFootball/KONAMI.
-      <br>
-      🏆 Utatumia kikosi chako mwenyewe kwenye mechi.
-      <br>
-      🔒 Usiweke password yako hapa.
+      ⚠️ Tumia akaunti yako mwenyewe ya eFootball/KONAMI
+      na kikosi chako mwenyewe.<br><br>
+      🚫 Usiweke password yako hapa.
     </div>
 
-    <input
-      class="input"
-      type="text"
-      id="playerName"
-      placeholder="Jina lako kamili"
-    >
+    <label>
+      <input id="ownAccount" type="checkbox" style="width:auto;">
+      Ninathibitisha kuwa natumia akaunti yangu na kikosi changu mwenyewe.
+    </label>
 
-    <input
-      class="input"
-      type="text"
-      id="username"
-      placeholder="eFootball Username"
-    >
-
-    <input
-      class="input"
-      type="tel"
-      id="whatsapp"
-      placeholder="Namba ya WhatsApp"
-    >
-
-    <div class="check-area">
-      <label>
-        <input type="checkbox" id="ownAccount">
-        Ninathibitisha kuwa natumia akaunti yangu mwenyewe
-        ya eFootball/KONAMI na nitatumia kikosi changu mwenyewe.
-      </label>
-    </div>
-
-    <button class="submit-btn" onclick="submitRegistration()">
-      ✅ TUMA USAJILI
-    </button>
-
-    <button class="close-btn" onclick="closeRegister()">
-      ✖ FUNGA
-    </button>
+    <button onclick="submitRegistration()">✅ JISAJILI</button>
+    <button onclick="goHome()">⬅️ RUDI</button>
 
   </div>
 
-  <footer>
-    eFOOTBALL LEAGUE © 2026
-  </footer>
+</div>
 
-  <script>
+<footer>
+  eFOOTBALL LEAGUE © 2026
+</footer>
 
-    function showRegister() {
-      document.getElementById("registerBox").style.display = "block";
+<script>
 
-      document.getElementById("registerBox").scrollIntoView({
-        behavior: "smooth"
-      });
-    }
+const SUPABASE_URL = "https://hhobdbhdaesvlxzjvsfh.supabase.co";
 
-    function closeRegister() {
-      document.getElementById("registerBox").style.display = "none";
-    }
+const SUPABASE_KEY = "sb_publishable_VJGlxIhg6uTndMLhYJR2mw_e4ApXVdi";
 
-    function submitRegistration() {
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-      const name = document.getElementById("playerName").value.trim();
-      const username = document.getElementById("username").value.trim();
-      const whatsapp = document.getElementById("whatsapp").value.trim();
-      const ownAccount = document.getElementById("ownAccount").checked;
+async function submitRegistration() {
 
-      if (!name || !username || !whatsapp) {
-        alert("⚠️ Tafadhali jaza taarifa zote.");
-        return;
+  const playerName =
+    document.getElementById("playerName").value.trim();
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const whatsapp =
+    document.getElementById("whatsapp").value.trim();
+
+  const ownAccount =
+    document.getElementById("ownAccount").checked;
+
+  if (!playerName || !username || !whatsapp) {
+    alert("⚠️ Tafadhali jaza taarifa zote.");
+    return;
+  }
+
+  if (!ownAccount) {
+    alert("⚠️ Tafadhali thibitisha kuwa unatumia akaunti na kikosi chako mwenyewe.");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("players")
+    .insert([
+      {
+        player_name: playerName,
+        username: username,
+        whatsapp: whatsapp,
+        own_account: true
       }
+    ]);
 
-      if (!ownAccount) {
-        alert(
-          "⚠️ Tafadhali thibitisha kuwa utatumia " +
-          "akaunti na kikosi chako mwenyewe."
-        );
-        return;
-      }
+  if (error) {
+    console.error(error);
+    alert("❌ Usajili umeshindikana. Jaribu tena.");
+    return;
+  }
 
-      alert(
-        "✅ Usajili umejazwa vizuri!\n\n" +
-        "Jina: " + name + "\n" +
-        "Username: " + username + "\n\n" +
-        "🏆 Utatumia kikosi chako mwenyewe.\n\n" +
-        "Usajili wako umeandaliwa."
-      );
-    }
+  alert("🎉 Umefanikiwa kujisajili kwenye eFOOTBALL LEAGUE!");
 
-    function showMessage(message) {
-      alert(message);
-    }
+  document.getElementById("playerName").value = "";
+  document.getElementById("username").value = "";
+  document.getElementById("whatsapp").value = "";
+  document.getElementById("ownAccount").checked = false;
 
-  </script>
+  goHome();
+}
+
+function showRegister() {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("register").classList.remove("hidden");
+}
+
+function goHome() {
+  document.getElementById("register").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+}
+
+function showMessage(message) {
+  alert(message);
+}
+
+</script>
 
 </body>
 </html>
