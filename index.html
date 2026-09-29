@@ -142,6 +142,35 @@
       padding-bottom: 8px;
     }
 
+    .prize-card {
+      text-align: center;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      background: #f4f7f5;
+      border: 2px solid #075e2b;
+    }
+
+    .prize-card h3 {
+      margin: 5px 0 10px;
+      font-size: 22px;
+      color: #075e2b;
+    }
+
+    .prize-money {
+      font-size: 25px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .prize-date {
+      background: #fff3cd;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -182,6 +211,10 @@
 
     <button onclick="showResults()">
       📊 RESULTS
+    </button>
+
+    <button onclick="showPrizes()">
+      🎁 ZAWADI
     </button>
 
     <button onclick="showAdminLogin()">
@@ -319,6 +352,88 @@
     <button onclick="loadPublicResults()">
       🔄 REFRESH RESULTS
     </button>
+
+    <button onclick="goHome()">
+      ⬅️ RUDI
+    </button>
+
+  </div>
+
+
+  <!-- ZAWADI -->
+  <div class="card hidden" id="prizesPage">
+
+    <h2 class="section-title">🎁 ZAWADI ZA LIGI</h2>
+
+    <div class="notice">
+      🏆 Zawadi zitatolewa kwa wachezaji
+      watakaomaliza ligi katika nafasi zilizoainishwa hapa.
+    </div>
+
+    <div class="prize-card">
+
+      <h3>🥇 NAFASI YA 1</h3>
+
+      <div class="prize-money">
+        TSh 100,000
+      </div>
+
+      <p>
+        🏆 Bingwa wa eFOOTBALL LEAGUE
+      </p>
+
+    </div>
+
+
+    <div class="prize-card">
+
+      <h3>🥈 NAFASI YA 2</h3>
+
+      <div class="prize-money">
+        TSh 50,000
+      </div>
+
+      <p>
+        🏆 Mshindi wa pili
+      </p>
+
+    </div>
+
+
+    <div class="prize-card">
+
+      <h3>🥉 NAFASI YA 3</h3>
+
+      <div class="prize-money">
+        TSh 25,000
+      </div>
+
+      <p>
+        🏆 Mshindi wa tatu
+      </p>
+
+    </div>
+
+
+    <div class="prize-date">
+
+      📅 <strong>Tarehe ya mwisho ya ligi</strong>
+
+      <br><br>
+
+      30/10/2026
+
+    </div>
+
+
+    <div class="notice">
+
+      ℹ️ Nafasi za mwisho zitaamuliwa
+      kwa kuzingatia matokeo na pointi
+      kwenye League Table.
+
+    </div>
+
 
     <button onclick="goHome()">
       ⬅️ RUDI
@@ -1076,12 +1191,6 @@ async function loadAdminFixtures() {
     let actionHTML = "";
 
 
-    /*
-      SCHEDULED:
-      - Weka matokeo
-      - Futa fixture
-    */
-
     if (fixture.status === "scheduled") {
 
       actionHTML = `
@@ -1119,12 +1228,6 @@ async function loadAdminFixtures() {
       `;
 
     } else {
-
-      /*
-        COMPLETED:
-        - Onyesha matokeo
-        - Futa fixture
-      */
 
       actionHTML = `
 
@@ -1988,6 +2091,20 @@ function showResults() {
 
 
 /* =========================
+   SHOW PRIZES
+========================= */
+
+function showPrizes() {
+
+  hideAllPages();
+
+  document.getElementById("prizesPage")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================
    SHOW LEAGUE TABLE
 ========================= */
 
@@ -2037,6 +2154,9 @@ function hideAllPages() {
     .classList.add("hidden");
 
   document.getElementById("resultsPage")
+    .classList.add("hidden");
+
+  document.getElementById("prizesPage")
     .classList.add("hidden");
 
   document.getElementById("leaguePage")
