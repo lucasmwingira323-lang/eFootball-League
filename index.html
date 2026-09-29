@@ -171,6 +171,14 @@
       margin-bottom: 18px;
     }
 
+    .admin-prize-box {
+      background: #f4f7f5;
+      padding: 18px;
+      border-radius: 12px;
+      border: 2px solid #075e2b;
+      margin-bottom: 15px;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -374,8 +382,11 @@
 
       <h3>🥇 NAFASI YA 1</h3>
 
-      <div class="prize-money">
-        TSh 100,000
+      <div
+        class="prize-money"
+        id="publicFirstPrize"
+      >
+        ⏳ Inapakia...
       </div>
 
       <p>
@@ -389,8 +400,11 @@
 
       <h3>🥈 NAFASI YA 2</h3>
 
-      <div class="prize-money">
-        TSh 50,000
+      <div
+        class="prize-money"
+        id="publicSecondPrize"
+      >
+        ⏳ Inapakia...
       </div>
 
       <p>
@@ -404,8 +418,11 @@
 
       <h3>🥉 NAFASI YA 3</h3>
 
-      <div class="prize-money">
-        TSh 25,000
+      <div
+        class="prize-money"
+        id="publicThirdPrize"
+      >
+        ⏳ Inapakia...
       </div>
 
       <p>
@@ -421,7 +438,9 @@
 
       <br><br>
 
-      30/10/2026
+      <span id="publicEndDate">
+        ⏳ Inapakia...
+      </span>
 
     </div>
 
@@ -473,6 +492,79 @@
 
     <hr>
 
+
+    <!-- MANAGE PRIZES -->
+    <h3 class="section-title">
+      🎁 SIMAMIA ZAWADI
+    </h3>
+
+    <div class="admin-prize-box">
+
+      <div class="notice">
+        ⚙️ Hapa Admin anaweza kubadilisha
+        zawadi na tarehe ya mwisho ya ligi.
+      </div>
+
+      <label>
+        🥇 Zawadi ya Nafasi ya 1
+      </label>
+
+      <input
+        id="adminFirstPrize"
+        type="number"
+        min="0"
+        placeholder="100000"
+      >
+
+
+      <label>
+        🥈 Zawadi ya Nafasi ya 2
+      </label>
+
+      <input
+        id="adminSecondPrize"
+        type="number"
+        min="0"
+        placeholder="50000"
+      >
+
+
+      <label>
+        🥉 Zawadi ya Nafasi ya 3
+      </label>
+
+      <input
+        id="adminThirdPrize"
+        type="number"
+        min="0"
+        placeholder="25000"
+      >
+
+
+      <label>
+        📅 Tarehe ya mwisho ya ligi
+      </label>
+
+      <input
+        id="adminEndDate"
+        type="date"
+      >
+
+
+      <button onclick="savePrizes()">
+        💾 HIFADHI ZAWADI
+      </button>
+
+      <button onclick="loadAdminPrizes()">
+        🔄 REFRESH ZAWADI
+      </button>
+
+    </div>
+
+
+    <hr>
+
+
     <!-- PLAYERS -->
     <h3 class="section-title">
       👥 Wachezaji Waliojisajili
@@ -488,6 +580,7 @@
 
     <hr>
 
+
     <!-- CREATE FIXTURE -->
     <h3 class="section-title">
       📅 TENGENEZA FIXTURE
@@ -496,13 +589,17 @@
     <label>Mchezaji 1</label>
 
     <select id="fixturePlayer1">
-      <option value="">-- Chagua Mchezaji 1 --</option>
+      <option value="">
+        -- Chagua Mchezaji 1 --
+      </option>
     </select>
 
     <label>Mchezaji 2</label>
 
     <select id="fixturePlayer2">
-      <option value="">-- Chagua Mchezaji 2 --</option>
+      <option value="">
+        -- Chagua Mchezaji 2 --
+      </option>
     </select>
 
     <label>Tarehe na Muda</label>
@@ -517,6 +614,7 @@
     </button>
 
     <hr>
+
 
     <!-- ADMIN FIXTURES -->
     <h3 class="section-title">
@@ -533,7 +631,10 @@
 
     <hr>
 
-    <button class="logout" onclick="adminLogout()">
+    <button
+      class="logout"
+      onclick="adminLogout()"
+    >
       🚪 LOGOUT
     </button>
 
@@ -773,6 +874,341 @@ async function adminLogin() {
   await loadApprovedPlayersForFixtures();
 
   await loadAdminFixtures();
+
+  await loadAdminPrizes();
+}
+
+
+/* =========================
+   PUBLIC PRIZES
+========================= */
+
+async function loadPublicPrizes() {
+
+  const firstPrize =
+    document.getElementById("publicFirstPrize");
+
+  const secondPrize =
+    document.getElementById("publicSecondPrize");
+
+  const thirdPrize =
+    document.getElementById("publicThirdPrize");
+
+  const endDate =
+    document.getElementById("publicEndDate");
+
+
+  firstPrize.textContent =
+    "⏳ Inapakia...";
+
+  secondPrize.textContent =
+    "⏳ Inapakia...";
+
+  thirdPrize.textContent =
+    "⏳ Inapakia...";
+
+  endDate.textContent =
+    "⏳ Inapakia...";
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("league_prizes")
+    .select(`
+      first_prize,
+      second_prize,
+      third_prize,
+      end_date
+    `)
+    .limit(1)
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "PUBLIC PRIZES ERROR:",
+      error
+    );
+
+    firstPrize.textContent =
+      "Haijapatikana";
+
+    secondPrize.textContent =
+      "Haijapatikana";
+
+    thirdPrize.textContent =
+      "Haijapatikana";
+
+    endDate.textContent =
+      "Haijawekwa";
+
+    return;
+  }
+
+
+  if (!data) {
+
+    firstPrize.textContent =
+      "Haijapatikana";
+
+    secondPrize.textContent =
+      "Haijapatikana";
+
+    thirdPrize.textContent =
+      "Haijapatikana";
+
+    endDate.textContent =
+      "Haijawekwa";
+
+    return;
+  }
+
+
+  firstPrize.textContent =
+    "TSh " +
+    Number(data.first_prize)
+    .toLocaleString("en-US");
+
+
+  secondPrize.textContent =
+    "TSh " +
+    Number(data.second_prize)
+    .toLocaleString("en-US");
+
+
+  thirdPrize.textContent =
+    "TSh " +
+    Number(data.third_prize)
+    .toLocaleString("en-US");
+
+
+  if (data.end_date) {
+
+    const parts =
+      data.end_date.split("-");
+
+    if (parts.length === 3) {
+
+      endDate.textContent =
+        parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0];
+
+    } else {
+
+      endDate.textContent =
+        data.end_date;
+
+    }
+
+  } else {
+
+    endDate.textContent =
+      "Haijawekwa";
+
+  }
+
+}
+
+
+/* =========================
+   ADMIN PRIZES
+========================= */
+
+async function loadAdminPrizes() {
+
+  const firstPrize =
+    document.getElementById("adminFirstPrize");
+
+  const secondPrize =
+    document.getElementById("adminSecondPrize");
+
+  const thirdPrize =
+    document.getElementById("adminThirdPrize");
+
+  const endDate =
+    document.getElementById("adminEndDate");
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("league_prizes")
+    .select(`
+      first_prize,
+      second_prize,
+      third_prize,
+      end_date
+    `)
+    .limit(1)
+    .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "ADMIN PRIZES ERROR:",
+      error
+    );
+
+    alert(
+      "❌ Imeshindikana kupata taarifa za ZAWADI: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  if (!data) {
+
+    alert(
+      "❌ Hakuna taarifa za ZAWADI."
+    );
+
+    return;
+  }
+
+
+  firstPrize.value =
+    data.first_prize ?? "";
+
+  secondPrize.value =
+    data.second_prize ?? "";
+
+  thirdPrize.value =
+    data.third_prize ?? "";
+
+  endDate.value =
+    data.end_date ?? "";
+
+}
+
+
+/* =========================
+   SAVE ADMIN PRIZES
+========================= */
+
+async function savePrizes() {
+
+  const firstPrize =
+    document.getElementById("adminFirstPrize")
+    .value;
+
+  const secondPrize =
+    document.getElementById("adminSecondPrize")
+    .value;
+
+  const thirdPrize =
+    document.getElementById("adminThirdPrize")
+    .value;
+
+  const endDate =
+    document.getElementById("adminEndDate")
+    .value;
+
+
+  if (
+    firstPrize === "" ||
+    secondPrize === "" ||
+    thirdPrize === "" ||
+    endDate === ""
+  ) {
+
+    alert(
+      "⚠️ Tafadhali jaza taarifa zote za ZAWADI."
+    );
+
+    return;
+  }
+
+
+  if (
+    Number(firstPrize) < 0 ||
+    Number(secondPrize) < 0 ||
+    Number(thirdPrize) < 0
+  ) {
+
+    alert(
+      "⚠️ Kiasi cha zawadi hakiwezi kuwa chini ya 0."
+    );
+
+    return;
+  }
+
+
+  const { data: existing, error: findError } =
+    await supabaseClient
+    .from("league_prizes")
+    .select("id")
+    .limit(1)
+    .maybeSingle();
+
+
+  if (findError) {
+
+    console.error(
+      "FIND PRIZE ERROR:",
+      findError
+    );
+
+    alert(
+      "❌ Imeshindikana kupata ZAWADI: " +
+      findError.message
+    );
+
+    return;
+  }
+
+
+  if (!existing) {
+
+    alert(
+      "❌ Hakuna rekodi ya ZAWADI kwenye database."
+    );
+
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+    .from("league_prizes")
+    .update({
+      first_prize: Number(firstPrize),
+      second_prize: Number(secondPrize),
+      third_prize: Number(thirdPrize),
+      end_date: endDate,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", existing.id);
+
+
+  if (error) {
+
+    console.error(
+      "SAVE PRIZES ERROR:",
+      error
+    );
+
+    alert(
+      "❌ ZAWADI hazijahifadhiwa: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "✅ ZAWADI zimehifadhiwa kikamilifu!"
+  );
+
+
+  await loadAdminPrizes();
+
 }
 
 
@@ -830,7 +1266,7 @@ async function loadPlayers() {
 
 
     let whatsappNumber =
-      player.whatsapp
+      String(player.whatsapp || "")
       .replace(/\D/g, "");
 
 
@@ -910,7 +1346,10 @@ async function loadPlayers() {
 
       <button
         class="delete"
-        onclick="deletePlayer(${player.id}, '${escapeJS(player.player_name)}')"
+        onclick="deletePlayer(
+          ${player.id},
+          '${escapeJS(player.player_name)}'
+        )"
       >
         🗑️ FUTA AKAUNTI
       </button>
@@ -966,7 +1405,6 @@ async function loadApprovedPlayersForFixtures() {
 
 
   if (!data || data.length === 0) {
-
     return;
   }
 
@@ -1991,7 +2429,10 @@ async function approvePlayer(playerId) {
    DELETE PLAYER
 ========================= */
 
-async function deletePlayer(playerId, playerName) {
+async function deletePlayer(
+  playerId,
+  playerName
+) {
 
   const confirmed =
     confirm(
@@ -2000,6 +2441,7 @@ async function deletePlayer(playerId, playerName) {
       "?\n\n" +
       "Taarifa za mchezaji huyu zitaondolewa."
     );
+
 
   if (!confirmed) {
     return;
@@ -2045,13 +2487,17 @@ async function deletePlayer(playerId, playerName) {
    SEND WHATSAPP
 ========================= */
 
-function sendWhatsApp(number, message) {
+function sendWhatsApp(
+  number,
+  message
+) {
 
   const url =
     "https://wa.me/" +
     number +
     "?text=" +
     message;
+
 
   window.open(
     url,
@@ -2094,13 +2540,14 @@ function showResults() {
    SHOW PRIZES
 ========================= */
 
-function showPrizes() {
+async function showPrizes() {
 
   hideAllPages();
 
   document.getElementById("prizesPage")
     .classList.remove("hidden");
 
+  await loadPublicPrizes();
 }
 
 
@@ -2202,6 +2649,7 @@ function escapeHTML(value) {
     return "";
   }
 
+
   return String(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -2219,6 +2667,7 @@ function escapeJS(value) {
   ) {
     return "";
   }
+
 
   return String(value)
     .replace(/\\/g, "\\\\")
