@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eFOOTBALL LEAGUE</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f5f8;
+      color: #111;
+      text-align: center;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 35px 15px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 17px;
+    }
+
+    .buttons {
+      padding: 30px 15px;
+    }
+
+    button {
+      width: 90%;
+      max-width: 350px;
+      padding: 16px;
+      margin: 8px;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .register {
+      background: #16a34a;
+      color: white;
+    }
+
+    .table {
+      background: #2563eb;
+      color: white;
+    }
+
+    .fixtures {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .results {
+      background: #7c3aed;
+      color: white;
+    }
+
+    #registerBox {
+      display: none;
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      margin: 0 auto 30px;
+      padding: 25px 10px;
+      border-radius: 18px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+      box-sizing: border-box;
+    }
+
+    #registerBox h2 {
+      margin-top: 0;
+      color: #111827;
+    }
+
+    .input {
+      width: 90%;
+      padding: 14px;
+      margin: 7px auto;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+      display: block;
+    }
+
+    .check-area {
+      width: 90%;
+      margin: 15px auto;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .submit-btn {
+      background: #16a34a;
+      color: white;
+      width: 90%;
+    }
+
+    .close-btn {
+      background: #6b7280;
+      color: white;
+      width: 90%;
+    }
+
+    .notice {
+      background: #fff7ed;
+      color: #9a3412;
+      padding: 12px;
+      margin: 15px auto;
+      width: 90%;
+      border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 20px;
+      background: #111827;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🏆 eFOOTBALL LEAGUE</h1>
+    <div class="subtitle">⚽ 1v1 Online Competition</div>
+  </header>
+
+  <div class="buttons">
+
+    <button class="register" onclick="showRegister()">
+      📝 JISAJILI
+    </button>
+
+    <button class="table" onclick="showMessage('🏆 League Table itawekwa hapa.')">
+      🏆 LEAGUE TABLE
+    </button>
+
+    <button class="fixtures" onclick="showMessage('📅 Fixtures zitawekwa hapa.')">
+      📅 FIXTURES
+    </button>
+
+    <button class="results" onclick="showMessage('📊 Results zitawekwa hapa.')">
+      📊 RESULTS
+    </button>
+
+  </div>
+
+  <!-- REGISTRATION FORM -->
+
+  <div id="registerBox">
+
+    <h2>📝 JISAJILI eFOOTBALL LEAGUE</h2>
+
+    <div class="notice">
+      ⚽ Tumia akaunti yako mwenyewe ya eFootball/KONAMI.
+      <br>
+      🏆 Utatumia kikosi chako mwenyewe kwenye mechi.
+      <br>
+      🔒 Usiweke password yako hapa.
+    </div>
+
+    <input
+      class="input"
+      type="text"
+      id="playerName"
+      placeholder="Jina lako kamili"
+    >
+
+    <input
+      class="input"
+      type="text"
+      id="username"
+      placeholder="eFootball Username"
+    >
+
+    <input
+      class="input"
+      type="tel"
+      id="whatsapp"
+      placeholder="Namba ya WhatsApp"
+    >
+
+    <div class="check-area">
+      <label>
+        <input type="checkbox" id="ownAccount">
+        Ninathibitisha kuwa natumia akaunti yangu mwenyewe
+        ya eFootball/KONAMI na nitatumia kikosi changu mwenyewe.
+      </label>
+    </div>
+
+    <button class="submit-btn" onclick="submitRegistration()">
+      ✅ TUMA USAJILI
+    </button>
+
+    <button class="close-btn" onclick="closeRegister()">
+      ✖ FUNGA
+    </button>
+
+  </div>
+
+  <footer>
+    eFOOTBALL LEAGUE © 2026
+  </footer>
+
+  <script>
+
+    function showRegister() {
+      document.getElementById("registerBox").style.display = "block";
+
+      document.getElementById("registerBox").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    function closeRegister() {
+      document.getElementById("registerBox").style.display = "none";
+    }
+
+    function submitRegistration() {
+
+      const name = document.getElementById("playerName").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const whatsapp = document.getElementById("whatsapp").value.trim();
+      const ownAccount = document.getElementById("ownAccount").checked;
+
+      if (!name || !username || !whatsapp) {
+        alert("⚠️ Tafadhali jaza taarifa zote.");
+        return;
+      }
+
+      if (!ownAccount) {
+        alert(
+          "⚠️ Tafadhali thibitisha kuwa utatumia " +
+          "akaunti na kikosi chako mwenyewe."
+        );
+        return;
+      }
+
+      alert(
+        "✅ Usajili umejazwa vizuri!\n\n" +
+        "Jina: " + name + "\n" +
+        "Username: " + username + "\n\n" +
+        "🏆 Utatumia kikosi chako mwenyewe.\n\n" +
+        "Usajili wako umeandaliwa."
+      );
+    }
+
+    function showMessage(message) {
+      alert(message);
+    }
+
+  </script>
+
+</body>
+</html>
