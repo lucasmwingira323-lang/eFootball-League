@@ -99,6 +99,10 @@
       background: #075e2b;
     }
 
+    .whatsapp {
+      background: #25D366;
+    }
+
     .logout {
       background: #b00020;
     }
@@ -573,6 +577,32 @@ async function loadPlayers() {
     div.className = "player";
 
 
+    let whatsappNumber =
+      player.whatsapp
+      .replace(/\D/g, "");
+
+
+    if (
+      whatsappNumber.startsWith("0")
+    ) {
+      whatsappNumber =
+        "255" +
+        whatsappNumber.substring(1);
+    }
+
+
+    const whatsappMessage =
+      encodeURIComponent(
+        "🎉 Hongera " +
+        player.player_name +
+        "!\n\n" +
+        "Usajili wako kwenye eFOOTBALL LEAGUE " +
+        "umekubaliwa. ✅\n\n" +
+        "Karibu kwenye mashindano ya 1v1. ⚽🏆\n\n" +
+        "Tutakutumia taarifa za Fixtures na mchezo wako."
+      );
+
+
     div.innerHTML = `
 
       <strong>👤 Mchezaji #${index + 1}</strong>
@@ -616,6 +646,13 @@ async function loadPlayers() {
         `
         : `
           <strong>✅ Mchezaji amekubaliwa</strong>
+
+          <button
+            class="whatsapp"
+            onclick="sendWhatsApp('${whatsappNumber}', '${whatsappMessage}')"
+          >
+            📲 TUMA TAARIFA WHATSAPP
+          </button>
         `
       }
 
@@ -666,6 +703,25 @@ async function approvePlayer(playerId) {
 
 
   loadPlayers();
+}
+
+
+/* =========================
+   SEND WHATSAPP
+========================= */
+
+function sendWhatsApp(number, message) {
+
+  const url =
+    "https://wa.me/" +
+    number +
+    "?text=" +
+    message;
+
+  window.open(
+    url,
+    "_blank"
+  );
 }
 
 
