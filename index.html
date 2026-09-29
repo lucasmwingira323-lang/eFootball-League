@@ -57,7 +57,8 @@
       cursor: pointer;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       box-sizing: border-box;
       padding: 13px;
@@ -66,6 +67,7 @@
       border: 1px solid #ccc;
       border-radius: 9px;
       font-size: 16px;
+      background: white;
     }
 
     label {
@@ -84,14 +86,16 @@
       border-left: 5px solid #075e2b;
     }
 
-    .player {
+    .player,
+    .fixture {
       background: #f4f7f5;
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 12px;
     }
 
-    .player strong {
+    .player strong,
+    .fixture strong {
       color: #075e2b;
     }
 
@@ -111,8 +115,31 @@
       background: #b00020;
     }
 
+    .result {
+      background: #1565c0;
+    }
+
     .hidden {
       display: none;
+    }
+
+    .score-input {
+      width: 48%;
+      display: inline-block;
+      box-sizing: border-box;
+    }
+
+    .versus {
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+      margin: 5px 0;
+    }
+
+    .section-title {
+      color: #075e2b;
+      border-bottom: 2px solid #075e2b;
+      padding-bottom: 8px;
     }
 
     footer {
@@ -145,15 +172,15 @@
       📝 JISAJILI
     </button>
 
-    <button onclick="showMessage('🏆 League Table itakuja hapa.')">
+    <button onclick="showLeagueTable()">
       🏆 LEAGUE TABLE
     </button>
 
-    <button onclick="showMessage('📅 Fixtures zitakuja hapa.')">
+    <button onclick="showFixtures()">
       📅 FIXTURES
     </button>
 
-    <button onclick="showMessage('📊 Results zitaonekana hapa.')">
+    <button onclick="showResults()">
       📊 RESULTS
     </button>
 
@@ -260,6 +287,66 @@
   </div>
 
 
+  <!-- PUBLIC FIXTURES -->
+  <div class="card hidden" id="fixturesPage">
+
+    <h2 class="section-title">📅 FIXTURES</h2>
+
+    <div id="publicFixtures">
+      ⏳ Inapakia fixtures...
+    </div>
+
+    <button onclick="loadPublicFixtures()">
+      🔄 REFRESH FIXTURES
+    </button>
+
+    <button onclick="goHome()">
+      ⬅️ RUDI
+    </button>
+
+  </div>
+
+
+  <!-- PUBLIC RESULTS -->
+  <div class="card hidden" id="resultsPage">
+
+    <h2 class="section-title">📊 RESULTS</h2>
+
+    <div id="publicResults">
+      ⏳ Inapakia results...
+    </div>
+
+    <button onclick="loadPublicResults()">
+      🔄 REFRESH RESULTS
+    </button>
+
+    <button onclick="goHome()">
+      ⬅️ RUDI
+    </button>
+
+  </div>
+
+
+  <!-- LEAGUE TABLE -->
+  <div class="card hidden" id="leaguePage">
+
+    <h2 class="section-title">🏆 LEAGUE TABLE</h2>
+
+    <div id="leagueTable">
+      ⏳ Inapakia league table...
+    </div>
+
+    <button onclick="loadLeagueTable()">
+      🔄 REFRESH TABLE
+    </button>
+
+    <button onclick="goHome()">
+      ⬅️ RUDI
+    </button>
+
+  </div>
+
+
   <!-- ADMIN PANEL -->
   <div class="card hidden admin-card" id="adminPanel">
 
@@ -271,15 +358,65 @@
 
     <hr>
 
-    <h3>👥 Wachezaji Waliojisajili</h3>
+    <!-- PLAYERS -->
+    <h3 class="section-title">
+      👥 Wachezaji Waliojisajili
+    </h3>
 
     <div id="playersList">
       Inapakia...
     </div>
 
     <button onclick="loadPlayers()">
-      🔄 REFRESH
+      🔄 REFRESH WACHEZAJI
     </button>
+
+    <hr>
+
+    <!-- CREATE FIXTURE -->
+    <h3 class="section-title">
+      📅 TENGENEZA FIXTURE
+    </h3>
+
+    <label>Mchezaji 1</label>
+
+    <select id="fixturePlayer1">
+      <option value="">-- Chagua Mchezaji 1 --</option>
+    </select>
+
+    <label>Mchezaji 2</label>
+
+    <select id="fixturePlayer2">
+      <option value="">-- Chagua Mchezaji 2 --</option>
+    </select>
+
+    <label>Tarehe na Muda</label>
+
+    <input
+      id="fixtureDate"
+      type="datetime-local"
+    >
+
+    <button onclick="createFixture()">
+      📅 TENGENEZA FIXTURE
+    </button>
+
+    <hr>
+
+    <!-- ADMIN FIXTURES -->
+    <h3 class="section-title">
+      📅 FIXTURES ZILIZOTENGENEZWA
+    </h3>
+
+    <div id="adminFixtures">
+      ⏳ Inapakia fixtures...
+    </div>
+
+    <button onclick="loadAdminFixtures()">
+      🔄 REFRESH FIXTURES
+    </button>
+
+    <hr>
 
     <button class="logout" onclick="adminLogout()">
       🚪 LOGOUT
@@ -402,14 +539,7 @@ async function submitRegistration() {
 
 function showAdminLogin() {
 
-  document.getElementById("home")
-    .classList.add("hidden");
-
-  document.getElementById("register")
-    .classList.add("hidden");
-
-  document.getElementById("adminPanel")
-    .classList.add("hidden");
+  hideAllPages();
 
   document.getElementById("adminLogin")
     .classList.remove("hidden");
@@ -512,8 +642,7 @@ async function adminLogin() {
   }
 
 
-  document.getElementById("adminLogin")
-    .classList.add("hidden");
+  hideAllPages();
 
   document.getElementById("adminPanel")
     .classList.remove("hidden");
@@ -524,7 +653,11 @@ async function adminLogin() {
   document.getElementById("adminPassword").value = "";
 
 
-  loadPlayers();
+  await loadPlayers();
+
+  await loadApprovedPlayersForFixtures();
+
+  await loadAdminFixtures();
 }
 
 
@@ -678,6 +811,1017 @@ async function loadPlayers() {
 
 
 /* =========================
+   APPROVED PLAYERS
+   FOR FIXTURES
+========================= */
+
+async function loadApprovedPlayersForFixtures() {
+
+  const player1 =
+    document.getElementById("fixturePlayer1");
+
+  const player2 =
+    document.getElementById("fixturePlayer2");
+
+
+  player1.innerHTML =
+    '<option value="">-- Chagua Mchezaji 1 --</option>';
+
+  player2.innerHTML =
+    '<option value="">-- Chagua Mchezaji 2 --</option>';
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("players")
+    .select("id, player_name, username")
+    .eq("status", "approved")
+    .order("player_name");
+
+
+  if (error) {
+
+    console.error(
+      "APPROVED PLAYERS ERROR:",
+      error
+    );
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    return;
+  }
+
+
+  data.forEach(player => {
+
+    const option1 =
+      document.createElement("option");
+
+    option1.value = player.id;
+
+    option1.textContent =
+      player.player_name +
+      " (" +
+      player.username +
+      ")";
+
+
+    player1.appendChild(option1);
+
+
+    const option2 =
+      document.createElement("option");
+
+    option2.value = player.id;
+
+    option2.textContent =
+      player.player_name +
+      " (" +
+      player.username +
+      ")";
+
+
+    player2.appendChild(option2);
+
+  });
+
+}
+
+
+/* =========================
+   CREATE FIXTURE
+========================= */
+
+async function createFixture() {
+
+  const player1 =
+    document.getElementById("fixturePlayer1")
+    .value;
+
+  const player2 =
+    document.getElementById("fixturePlayer2")
+    .value;
+
+  const matchDate =
+    document.getElementById("fixtureDate")
+    .value;
+
+
+  if (!player1 || !player2 || !matchDate) {
+
+    alert(
+      "⚠️ Tafadhali chagua wachezaji wote na tarehe/muda."
+    );
+
+    return;
+  }
+
+
+  if (player1 === player2) {
+
+    alert(
+      "⚠️ Mchezaji hawezi kucheza dhidi yake mwenyewe."
+    );
+
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+    .from("fixtures")
+    .insert([
+      {
+        player1_id: Number(player1),
+        player2_id: Number(player2),
+        match_date: new Date(matchDate).toISOString(),
+        status: "scheduled"
+      }
+    ]);
+
+
+  if (error) {
+
+    console.error(
+      "CREATE FIXTURE ERROR:",
+      error
+    );
+
+    alert(
+      "❌ Fixture haikuweza kutengenezwa: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "✅ Fixture imetengenezwa!"
+  );
+
+
+  document.getElementById("fixturePlayer1")
+    .value = "";
+
+  document.getElementById("fixturePlayer2")
+    .value = "";
+
+  document.getElementById("fixtureDate")
+    .value = "";
+
+
+  loadAdminFixtures();
+  loadPublicFixtures();
+}
+
+
+/* =========================
+   LOAD ADMIN FIXTURES
+========================= */
+
+async function loadAdminFixtures() {
+
+  const list =
+    document.getElementById("adminFixtures");
+
+  list.innerHTML =
+    "⏳ Inapakia fixtures...";
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("fixtures")
+    .select(`
+      id,
+      created_at,
+      match_date,
+      status,
+      player1_id,
+      player2_id,
+      player1_score,
+      player2_score,
+      player1:players!fixtures_player1_id_fkey(
+        player_name,
+        username
+      ),
+      player2:players!fixtures_player2_id_fkey(
+        player_name,
+        username
+      )
+    `)
+    .order("match_date", {
+      ascending: true
+    });
+
+
+  if (error) {
+
+    console.error(
+      "ADMIN FIXTURES ERROR:",
+      error
+    );
+
+    list.innerHTML =
+      "❌ Imeshindikana kupata fixtures.";
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    list.innerHTML =
+      "📭 Hakuna fixture bado.";
+
+    return;
+  }
+
+
+  list.innerHTML = "";
+
+
+  data.forEach(fixture => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "fixture";
+
+
+    const date =
+      fixture.match_date
+      ? new Date(
+          fixture.match_date
+        ).toLocaleString("sw-TZ")
+      : "Haijawekwa";
+
+
+    const player1Name =
+      fixture.player1
+      ? fixture.player1.player_name
+      : "Mchezaji 1";
+
+
+    const player2Name =
+      fixture.player2
+      ? fixture.player2.player_name
+      : "Mchezaji 2";
+
+
+    let actionHTML = "";
+
+
+    if (fixture.status === "scheduled") {
+
+      actionHTML = `
+
+        <input
+          id="score1_${fixture.id}"
+          class="score-input"
+          type="number"
+          min="0"
+          placeholder="${escapeHTML(player1Name)}"
+        >
+
+        <input
+          id="score2_${fixture.id}"
+          class="score-input"
+          type="number"
+          min="0"
+          placeholder="${escapeHTML(player2Name)}"
+        >
+
+        <button
+          class="result"
+          onclick="saveResult(${fixture.id})"
+        >
+          📊 HIFADHI MATOKEO
+        </button>
+
+      `;
+
+    } else {
+
+      actionHTML = `
+
+        <strong>
+          🏁 Matokeo:
+          ${fixture.player1_score ?? 0}
+          - 
+          ${fixture.player2_score ?? 0}
+        </strong>
+
+        <button
+          class="result"
+          onclick="deleteFixture(${fixture.id})"
+        >
+          🗑️ FUTA FIXTURE
+        </button>
+
+      `;
+
+    }
+
+
+    div.innerHTML = `
+
+      <strong>📅 Fixture #${fixture.id}</strong>
+
+      <br><br>
+
+      <strong>⚽ ${escapeHTML(player1Name)}</strong>
+
+      <div class="versus">
+        VS
+      </div>
+
+      <strong>⚽ ${escapeHTML(player2Name)}</strong>
+
+      <br><br>
+
+      <strong>🕐 Tarehe:</strong>
+      ${escapeHTML(date)}
+
+      <br>
+
+      <strong>Status:</strong>
+      ${escapeHTML(fixture.status)}
+
+      <br><br>
+
+      ${actionHTML}
+
+    `;
+
+
+    list.appendChild(div);
+
+  });
+
+}
+
+
+/* =========================
+   SAVE RESULT
+========================= */
+
+async function saveResult(fixtureId) {
+
+  const score1 =
+    document.getElementById(
+      "score1_" + fixtureId
+    ).value;
+
+  const score2 =
+    document.getElementById(
+      "score2_" + fixtureId
+    ).value;
+
+
+  if (
+    score1 === "" ||
+    score2 === ""
+  ) {
+
+    alert(
+      "⚠️ Weka matokeo ya wachezaji wote."
+    );
+
+    return;
+  }
+
+
+  if (
+    Number(score1) < 0 ||
+    Number(score2) < 0
+  ) {
+
+    alert(
+      "⚠️ Score haiwezi kuwa chini ya 0."
+    );
+
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+    .from("fixtures")
+    .update({
+      player1_score: Number(score1),
+      player2_score: Number(score2),
+      status: "completed"
+    })
+    .eq("id", fixtureId);
+
+
+  if (error) {
+
+    console.error(
+      "SAVE RESULT ERROR:",
+      error
+    );
+
+    alert(
+      "❌ Matokeo hayakuweza kuhifadhiwa: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "✅ Matokeo yamehifadhiwa!"
+  );
+
+
+  loadAdminFixtures();
+  loadPublicResults();
+  loadLeagueTable();
+}
+
+
+/* =========================
+   DELETE FIXTURE
+========================= */
+
+async function deleteFixture(fixtureId) {
+
+  const confirmed =
+    confirm(
+      "⚠️ Una uhakika unataka kufuta fixture hii?"
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+    .from("fixtures")
+    .delete()
+    .eq("id", fixtureId);
+
+
+  if (error) {
+
+    console.error(
+      "DELETE FIXTURE ERROR:",
+      error
+    );
+
+    alert(
+      "❌ Imeshindikana kufuta fixture: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "🗑️ Fixture imefutwa."
+  );
+
+
+  loadAdminFixtures();
+}
+
+
+/* =========================
+   PUBLIC FIXTURES
+========================= */
+
+async function loadPublicFixtures() {
+
+  const list =
+    document.getElementById("publicFixtures");
+
+  list.innerHTML =
+    "⏳ Inapakia fixtures...";
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("fixtures")
+    .select(`
+      id,
+      match_date,
+      status,
+      player1_score,
+      player2_score,
+      player1:players!fixtures_player1_id_fkey(
+        player_name,
+        username
+      ),
+      player2:players!fixtures_player2_id_fkey(
+        player_name,
+        username
+      )
+    `)
+    .eq("status", "scheduled")
+    .order("match_date", {
+      ascending: true
+    });
+
+
+  if (error) {
+
+    console.error(
+      "PUBLIC FIXTURES ERROR:",
+      error
+    );
+
+    list.innerHTML =
+      "❌ Imeshindikana kupata fixtures.";
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    list.innerHTML =
+      "📭 Hakuna fixture iliyopangwa bado.";
+
+    return;
+  }
+
+
+  list.innerHTML = "";
+
+
+  data.forEach(fixture => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "fixture";
+
+
+    const date =
+      fixture.match_date
+      ? new Date(
+          fixture.match_date
+        ).toLocaleString("sw-TZ")
+      : "Haijawekwa";
+
+
+    const player1Name =
+      fixture.player1
+      ? fixture.player1.player_name
+      : "Mchezaji 1";
+
+
+    const player2Name =
+      fixture.player2
+      ? fixture.player2.player_name
+      : "Mchezaji 2";
+
+
+    div.innerHTML = `
+
+      <strong>📅 FIXTURE #${fixture.id}</strong>
+
+      <br><br>
+
+      <strong>⚽ ${escapeHTML(player1Name)}</strong>
+
+      <div class="versus">
+        VS
+      </div>
+
+      <strong>⚽ ${escapeHTML(player2Name)}</strong>
+
+      <br><br>
+
+      🕐 ${escapeHTML(date)}
+
+      <br><br>
+
+      🟢 Imeandaliwa
+
+    `;
+
+
+    list.appendChild(div);
+
+  });
+
+}
+
+
+/* =========================
+   PUBLIC RESULTS
+========================= */
+
+async function loadPublicResults() {
+
+  const list =
+    document.getElementById("publicResults");
+
+  list.innerHTML =
+    "⏳ Inapakia results...";
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("fixtures")
+    .select(`
+      id,
+      match_date,
+      status,
+      player1_score,
+      player2_score,
+      player1:players!fixtures_player1_id_fkey(
+        player_name,
+        username
+      ),
+      player2:players!fixtures_player2_id_fkey(
+        player_name,
+        username
+      )
+    `)
+    .eq("status", "completed")
+    .order("match_date", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(
+      "PUBLIC RESULTS ERROR:",
+      error
+    );
+
+    list.innerHTML =
+      "❌ Imeshindikana kupata results.";
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    list.innerHTML =
+      "📭 Hakuna matokeo bado.";
+
+    return;
+  }
+
+
+  list.innerHTML = "";
+
+
+  data.forEach(fixture => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "fixture";
+
+
+    const player1Name =
+      fixture.player1
+      ? fixture.player1.player_name
+      : "Mchezaji 1";
+
+
+    const player2Name =
+      fixture.player2
+      ? fixture.player2.player_name
+      : "Mchezaji 2";
+
+
+    div.innerHTML = `
+
+      <strong>🏁 MATCH #${fixture.id}</strong>
+
+      <br><br>
+
+      ⚽ ${escapeHTML(player1Name)}
+
+      <div class="versus">
+        ${fixture.player1_score ?? 0}
+        -
+        ${fixture.player2_score ?? 0}
+      </div>
+
+      ⚽ ${escapeHTML(player2Name)}
+
+      <br><br>
+
+      ✅ Completed
+
+    `;
+
+
+    list.appendChild(div);
+
+  });
+
+}
+
+
+/* =========================
+   LEAGUE TABLE
+========================= */
+
+async function loadLeagueTable() {
+
+  const table =
+    document.getElementById("leagueTable");
+
+  table.innerHTML =
+    "⏳ Inapakia league table...";
+
+
+  const { data: players, error: playersError } =
+    await supabaseClient
+    .from("players")
+    .select("id, player_name, username")
+    .eq("status", "approved");
+
+
+  if (playersError) {
+
+    console.error(
+      playersError
+    );
+
+    table.innerHTML =
+      "❌ Imeshindikana kupata wachezaji.";
+
+    return;
+  }
+
+
+  const { data: fixtures, error: fixturesError } =
+    await supabaseClient
+    .from("fixtures")
+    .select("*")
+    .eq("status", "completed");
+
+
+  if (fixturesError) {
+
+    console.error(
+      fixturesError
+    );
+
+    table.innerHTML =
+      "❌ Imeshindikana kupata matokeo.";
+
+    return;
+  }
+
+
+  const stats = {};
+
+
+  players.forEach(player => {
+
+    stats[player.id] = {
+      name: player.player_name,
+      played: 0,
+      wins: 0,
+      draws: 0,
+      losses: 0,
+      gf: 0,
+      ga: 0,
+      gd: 0,
+      points: 0
+    };
+
+  });
+
+
+  fixtures.forEach(fixture => {
+
+    if (
+      !stats[fixture.player1_id] ||
+      !stats[fixture.player2_id]
+    ) {
+      return;
+    }
+
+
+    const p1 =
+      stats[fixture.player1_id];
+
+    const p2 =
+      stats[fixture.player2_id];
+
+
+    const s1 =
+      Number(fixture.player1_score || 0);
+
+    const s2 =
+      Number(fixture.player2_score || 0);
+
+
+    p1.played++;
+    p2.played++;
+
+
+    p1.gf += s1;
+    p1.ga += s2;
+
+    p2.gf += s2;
+    p2.ga += s1;
+
+
+    if (s1 > s2) {
+
+      p1.wins++;
+      p1.points += 3;
+
+      p2.losses++;
+
+    } else if (s2 > s1) {
+
+      p2.wins++;
+      p2.points += 3;
+
+      p1.losses++;
+
+    } else {
+
+      p1.draws++;
+      p2.draws++;
+
+      p1.points++;
+      p2.points++;
+
+    }
+
+  });
+
+
+  Object.values(stats).forEach(player => {
+
+    player.gd =
+      player.gf -
+      player.ga;
+
+  });
+
+
+  const rows =
+    Object.values(stats)
+    .sort((a, b) => {
+
+      if (b.points !== a.points) {
+        return b.points - a.points;
+      }
+
+      if (b.gd !== a.gd) {
+        return b.gd - a.gd;
+      }
+
+      return b.gf - a.gf;
+
+    });
+
+
+  if (rows.length === 0) {
+
+    table.innerHTML =
+      "📭 Hakuna wachezaji waliokubaliwa.";
+
+    return;
+  }
+
+
+  let html = `
+
+    <div style="overflow-x:auto;">
+
+      <table
+        style="
+          width:100%;
+          border-collapse:collapse;
+          font-size:13px;
+        "
+      >
+
+        <tr style="background:#075e2b;color:white;">
+
+          <th style="padding:8px;">#</th>
+
+          <th style="padding:8px;">
+            Mchezaji
+          </th>
+
+          <th style="padding:8px;">
+            P
+          </th>
+
+          <th style="padding:8px;">
+            W
+          </th>
+
+          <th style="padding:8px;">
+            D
+          </th>
+
+          <th style="padding:8px;">
+            L
+          </th>
+
+          <th style="padding:8px;">
+            GF
+          </th>
+
+          <th style="padding:8px;">
+            GA
+          </th>
+
+          <th style="padding:8px;">
+            GD
+          </th>
+
+          <th style="padding:8px;">
+            Pts
+          </th>
+
+        </tr>
+  `;
+
+
+  rows.forEach((player, index) => {
+
+    html += `
+
+      <tr style="border-bottom:1px solid #ddd;">
+
+        <td style="padding:8px;text-align:center;">
+          ${index + 1}
+        </td>
+
+        <td style="padding:8px;">
+          ${escapeHTML(player.name)}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.played}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.wins}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.draws}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.losses}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.gf}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.ga}
+        </td>
+
+        <td style="padding:8px;text-align:center;">
+          ${player.gd}
+        </td>
+
+        <td style="padding:8px;text-align:center;font-weight:bold;">
+          ${player.points}
+        </td>
+
+      </tr>
+
+    `;
+
+  });
+
+
+  html += `
+      </table>
+    </div>
+  `;
+
+
+  table.innerHTML = html;
+}
+
+
+/* =========================
    APPROVE PLAYER
 ========================= */
 
@@ -714,6 +1858,7 @@ async function approvePlayer(playerId) {
 
 
   loadPlayers();
+  loadApprovedPlayersForFixtures();
 }
 
 
@@ -767,6 +1912,7 @@ async function deletePlayer(playerId, playerName) {
 
 
   loadPlayers();
+  loadApprovedPlayersForFixtures();
 }
 
 
@@ -790,6 +1936,106 @@ function sendWhatsApp(number, message) {
 
 
 /* =========================
+   SHOW FIXTURES
+========================= */
+
+function showFixtures() {
+
+  hideAllPages();
+
+  document.getElementById("fixturesPage")
+    .classList.remove("hidden");
+
+  loadPublicFixtures();
+}
+
+
+/* =========================
+   SHOW RESULTS
+========================= */
+
+function showResults() {
+
+  hideAllPages();
+
+  document.getElementById("resultsPage")
+    .classList.remove("hidden");
+
+  loadPublicResults();
+}
+
+
+/* =========================
+   SHOW LEAGUE TABLE
+========================= */
+
+function showLeagueTable() {
+
+  hideAllPages();
+
+  document.getElementById("leaguePage")
+    .classList.remove("hidden");
+
+  loadLeagueTable();
+}
+
+
+/* =========================
+   SHOW REGISTER
+========================= */
+
+function showRegister() {
+
+  hideAllPages();
+
+  document.getElementById("register")
+    .classList.remove("hidden");
+}
+
+
+/* =========================
+   HIDE ALL PAGES
+========================= */
+
+function hideAllPages() {
+
+  document.getElementById("home")
+    .classList.add("hidden");
+
+  document.getElementById("register")
+    .classList.add("hidden");
+
+  document.getElementById("adminLogin")
+    .classList.add("hidden");
+
+  document.getElementById("adminPanel")
+    .classList.add("hidden");
+
+  document.getElementById("fixturesPage")
+    .classList.add("hidden");
+
+  document.getElementById("resultsPage")
+    .classList.add("hidden");
+
+  document.getElementById("leaguePage")
+    .classList.add("hidden");
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function goHome() {
+
+  hideAllPages();
+
+  document.getElementById("home")
+    .classList.remove("hidden");
+}
+
+
+/* =========================
    LOGOUT
 ========================= */
 
@@ -797,57 +2043,7 @@ async function adminLogout() {
 
   await supabaseClient.auth.signOut();
 
-  document.getElementById("adminPanel")
-    .classList.add("hidden");
-
-  document.getElementById("home")
-    .classList.remove("hidden");
-
-}
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-function showRegister() {
-
-  document.getElementById("home")
-    .classList.add("hidden");
-
-  document.getElementById("adminLogin")
-    .classList.add("hidden");
-
-  document.getElementById("adminPanel")
-    .classList.add("hidden");
-
-  document.getElementById("register")
-    .classList.remove("hidden");
-
-}
-
-
-function goHome() {
-
-  document.getElementById("register")
-    .classList.add("hidden");
-
-  document.getElementById("adminLogin")
-    .classList.add("hidden");
-
-  document.getElementById("adminPanel")
-    .classList.add("hidden");
-
-  document.getElementById("home")
-    .classList.remove("hidden");
-
-}
-
-
-function showMessage(message) {
-
-  alert(message);
-
+  goHome();
 }
 
 
@@ -857,7 +2053,10 @@ function showMessage(message) {
 
 function escapeHTML(value) {
 
-  if (value === null || value === undefined) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
     return "";
   }
 
@@ -872,7 +2071,10 @@ function escapeHTML(value) {
 
 function escapeJS(value) {
 
-  if (value === null || value === undefined) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
     return "";
   }
 
