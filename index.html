@@ -142,25 +142,72 @@
       padding-bottom: 8px;
     }
 
+    /* =========================
+       ZAWADI
+    ========================= */
+
     .prize-card {
       text-align: center;
       padding: 20px;
       border-radius: 15px;
-      margin-bottom: 15px;
-      background: #f4f7f5;
+      margin-bottom: 18px;
+      background: linear-gradient(
+        180deg,
+        #ffffff,
+        #f4f7f5
+      );
       border: 2px solid #075e2b;
+      overflow: hidden;
     }
 
     .prize-card h3 {
-      margin: 5px 0 10px;
+      margin: 5px 0 12px;
       font-size: 22px;
       color: #075e2b;
     }
 
+    .money-image {
+      width: 100%;
+      max-width: 330px;
+      height: 145px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+      margin: 10px auto 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      border: 2px solid #ddd;
+    }
+
+    .money-stack {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px auto 15px;
+    }
+
+    .money-stack img {
+      width: 29%;
+      max-width: 105px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 7px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+      border: 1px solid #ccc;
+    }
+
     .prize-money {
-      font-size: 25px;
+      font-size: 28px;
       font-weight: bold;
-      color: #111;
+      color: #075e2b;
+      margin: 10px 0;
+    }
+
+    .prize-label {
+      font-size: 14px;
+      color: #555;
+      margin-top: 5px;
     }
 
     .prize-date {
@@ -420,22 +467,36 @@
   <!-- ZAWADI -->
   <div class="card hidden" id="prizesPage">
 
-    <h2 class="section-title">🎁 ZAWADI ZA LIGI</h2>
+    <h2 class="section-title">
+      🎁 ZAWADI ZA LIGI
+    </h2>
 
     <div class="notice">
       🏆 Zawadi zitatolewa kwa wachezaji
       watakaomaliza ligi katika nafasi zilizoainishwa hapa.
+      💰 Zawadi ni kwa Shilingi za Tanzania.
     </div>
+
+
+    <!-- FIRST PRIZE -->
 
     <div class="prize-card">
 
       <h3>🥇 NAFASI YA 1</h3>
 
-      <div
-        class="prize-money"
-        id="publicFirstPrize"
+      <img
+        class="money-image"
+        src="https://commons.wikimedia.org/wiki/Special:FilePath/10%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+        alt="Noti ya Shilingi 10,000 ya Tanzania"
+        loading="lazy"
       >
+
+      <div class="prize-money" id="publicFirstPrize">
         ⏳ Inapakia...
+      </div>
+
+      <div class="prize-label">
+        💰 Zawadi ya Bingwa
       </div>
 
       <p>
@@ -445,15 +506,40 @@
     </div>
 
 
+    <!-- SECOND PRIZE -->
+
     <div class="prize-card">
 
       <h3>🥈 NAFASI YA 2</h3>
 
-      <div
-        class="prize-money"
-        id="publicSecondPrize"
-      >
+      <div class="money-stack">
+
+        <img
+          src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
+          alt="Noti ya Shilingi 5,000 ya Tanzania"
+          loading="lazy"
+        >
+
+        <img
+          src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
+          alt="Noti ya Shilingi 5,000 ya Tanzania"
+          loading="lazy"
+        >
+
+        <img
+          src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
+          alt="Noti ya Shilingi 5,000 ya Tanzania"
+          loading="lazy"
+        >
+
+      </div>
+
+      <div class="prize-money" id="publicSecondPrize">
         ⏳ Inapakia...
+      </div>
+
+      <div class="prize-label">
+        💰 Zawadi ya mshindi wa pili
       </div>
 
       <p>
@@ -463,15 +549,40 @@
     </div>
 
 
+    <!-- THIRD PRIZE -->
+
     <div class="prize-card">
 
       <h3>🥉 NAFASI YA 3</h3>
 
-      <div
-        class="prize-money"
-        id="publicThirdPrize"
-      >
+      <div class="money-stack">
+
+        <img
+          src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+          alt="Noti ya Shilingi 2,000 ya Tanzania"
+          loading="lazy"
+        >
+
+        <img
+          src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+          alt="Noti ya Shilingi 2,000 ya Tanzania"
+          loading="lazy"
+        >
+
+        <img
+          src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+          alt="Noti ya Shilingi 2,000 ya Tanzania"
+          loading="lazy"
+        >
+
+      </div>
+
+      <div class="prize-money" id="publicThirdPrize">
         ⏳ Inapakia...
+      </div>
+
+      <div class="prize-label">
+        💰 Zawadi ya mshindi wa tatu
       </div>
 
       <p>
@@ -807,11 +918,6 @@ function startLeagueRealtime() {
 
     });
 }
-
-
-/* =========================
-   START LIVE SYSTEM
-========================= */
 
 startLeagueRealtime();
 
