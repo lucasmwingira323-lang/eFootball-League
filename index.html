@@ -201,13 +201,6 @@
 
     <input
       class="input"
-      type="text"
-      id="userId"
-      placeholder="eFootball User ID"
-    >
-
-    <input
-      class="input"
       type="tel"
       id="whatsapp"
       placeholder="Namba ya WhatsApp"
@@ -261,12 +254,11 @@
 
       const name = document.getElementById("playerName").value.trim();
       const username = document.getElementById("username").value.trim();
-      const userId = document.getElementById("userId").value.trim();
       const whatsapp = document.getElementById("whatsapp").value.trim();
       const team = document.getElementById("team").value;
       const ownAccount = document.getElementById("ownAccount").checked;
 
-      if (!name || !username || !userId || !whatsapp || !team) {
+      if (!name || !username || !whatsapp || !team) {
         alert("⚠️ Tafadhali jaza taarifa zote.");
         return;
       }
@@ -280,7 +272,7 @@
         "✅ Usajili umejazwa vizuri!\n\n" +
         "Jina: " + name + "\n" +
         "Username: " + username + "\n\n" +
-        "Hatua inayofuata ni kuunganisha fomu hii na mfumo wa kuhifadhi usajili."
+        "Usajili wako umeandaliwa."
       );
     }
 
