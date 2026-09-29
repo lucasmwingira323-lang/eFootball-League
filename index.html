@@ -179,6 +179,57 @@
       margin-bottom: 15px;
     }
 
+    .live-badge {
+      display: inline-block;
+      background: #d32f2f;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      width: 100%;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .league-table {
+      width: 100%;
+      min-width: 650px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .league-table th {
+      background: #075e2b;
+      color: white;
+      padding: 9px 7px;
+      white-space: nowrap;
+    }
+
+    .league-table td {
+      padding: 9px 7px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      white-space: nowrap;
+    }
+
+    .league-table td:nth-child(2) {
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .league-table tr:nth-child(even) {
+      background: #f8faf8;
+    }
+
+    .position-1 {
+      font-weight: bold;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
@@ -262,14 +313,12 @@
     >
 
     <div class="notice">
-
       ⚠️ Tumia akaunti yako mwenyewe ya
       eFootball/KONAMI na kikosi chako mwenyewe.
 
       <br><br>
 
       🚫 Usiweke password yako hapa.
-
     </div>
 
     <label>
@@ -464,7 +513,18 @@
   <!-- LEAGUE TABLE -->
   <div class="card hidden" id="leaguePage">
 
-    <h2 class="section-title">🏆 LEAGUE TABLE</h2>
+    <h2 class="section-title">
+      🏆 LEAGUE TABLE
+    </h2>
+
+    <div class="live-badge">
+      🔴 LIVE — INAJISASISHA YENYEWE
+    </div>
+
+    <div class="notice">
+      🔄 Jedwali hili linasasishwa moja kwa moja
+      baada ya matokeo mapya kuwekwa.
+    </div>
 
     <div id="leagueTable">
       ⏳ Inapakia league table...
@@ -661,6 +721,99 @@ const supabaseClient =
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
+
+/* =========================
+   LIVE LEAGUE SYSTEM
+========================= */
+
+let leagueRealtimeChannel = null;
+
+function startLeagueRealtime() {
+
+  if (leagueRealtimeChannel) {
+    return;
+  }
+
+  leagueRealtimeChannel =
+    supabaseClient
+    .channel("efootball-league-live")
+
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "fixtures"
+      },
+      payload => {
+
+        console.log(
+          "LIVE FIXTURE CHANGE:",
+          payload
+        );
+
+        loadLeagueTable();
+
+        const leaguePage =
+          document.getElementById("leaguePage");
+
+        if (
+          leaguePage &&
+          !leaguePage.classList.contains("hidden")
+        ) {
+          loadLeagueTable();
+        }
+
+        const resultsPage =
+          document.getElementById("resultsPage");
+
+        if (
+          resultsPage &&
+          !resultsPage.classList.contains("hidden")
+        ) {
+          loadPublicResults();
+        }
+
+        const fixturesPage =
+          document.getElementById("fixturesPage");
+
+        if (
+          fixturesPage &&
+          !fixturesPage.classList.contains("hidden")
+        ) {
+          loadPublicFixtures();
+        }
+
+        const adminPanel =
+          document.getElementById("adminPanel");
+
+        if (
+          adminPanel &&
+          !adminPanel.classList.contains("hidden")
+        ) {
+          loadAdminFixtures();
+        }
+
+      }
+    )
+
+    .subscribe(status => {
+
+      console.log(
+        "LEAGUE LIVE STATUS:",
+        status
+      );
+
+    });
+}
+
+
+/* =========================
+   START LIVE SYSTEM
+========================= */
+
+startLeagueRealtime();
 
 
 /* =========================
@@ -1366,7 +1519,6 @@ async function loadPlayers() {
 
 /* =========================
    APPROVED PLAYERS
-   FOR FIXTURES
 ========================= */
 
 async function loadApprovedPlayersForFixtures() {
@@ -1801,9 +1953,9 @@ async function saveResult(fixtureId) {
   );
 
 
-  loadAdminFixtures();
-  loadPublicResults();
-  loadLeagueTable();
+  await loadAdminFixtures();
+  await loadPublicResults();
+  await loadLeagueTable();
 }
 
 
@@ -1852,10 +2004,10 @@ async function deleteFixture(fixtureId) {
   );
 
 
-  loadAdminFixtures();
-  loadPublicFixtures();
-  loadPublicResults();
-  loadLeagueTable();
+  await loadAdminFixtures();
+  await loadPublicFixtures();
+  await loadPublicResults();
+  await loadLeagueTable();
 }
 
 
@@ -2096,7 +2248,7 @@ async function loadPublicResults() {
 
 
 /* =========================
-   LEAGUE TABLE
+   LIVE LEAGUE TABLE
 ========================= */
 
 async function loadLeagueTable() {
@@ -2104,20 +2256,31 @@ async function loadLeagueTable() {
   const table =
     document.getElementById("leagueTable");
 
+  if (!table) {
+    return;
+  }
+
+
   table.innerHTML =
     "⏳ Inapakia league table...";
 
 
-  const { data: players, error: playersError } =
+  const {
+    data: players,
+    error: playersError
+  } =
     await supabaseClient
     .from("players")
-    .select("id, player_name, username")
+    .select(
+      "id, player_name, username"
+    )
     .eq("status", "approved");
 
 
   if (playersError) {
 
     console.error(
+      "PLAYERS TABLE ERROR:",
       playersError
     );
 
@@ -2128,16 +2291,22 @@ async function loadLeagueTable() {
   }
 
 
-  const { data: fixtures, error: fixturesError } =
+  const {
+    data: fixtures,
+    error: fixturesError
+  } =
     await supabaseClient
     .from("fixtures")
-    .select("*")
+    .select(
+      "id, player1_id, player2_id, player1_score, player2_score, status"
+    )
     .eq("status", "completed");
 
 
   if (fixturesError) {
 
     console.error(
+      "FIXTURES TABLE ERROR:",
       fixturesError
     );
 
@@ -2154,15 +2323,25 @@ async function loadLeagueTable() {
   players.forEach(player => {
 
     stats[player.id] = {
+
       name: player.player_name,
+
       played: 0,
+
       wins: 0,
+
       draws: 0,
+
       losses: 0,
+
       gf: 0,
+
       ga: 0,
+
       gd: 0,
+
       points: 0
+
     };
 
   });
@@ -2186,10 +2365,14 @@ async function loadLeagueTable() {
 
 
     const s1 =
-      Number(fixture.player1_score || 0);
+      Number(
+        fixture.player1_score ?? 0
+      );
 
     const s2 =
-      Number(fixture.player2_score || 0);
+      Number(
+        fixture.player2_score ?? 0
+      );
 
 
     p1.played++;
@@ -2206,23 +2389,31 @@ async function loadLeagueTable() {
     if (s1 > s2) {
 
       p1.wins++;
+
       p1.points += 3;
 
       p2.losses++;
 
-    } else if (s2 > s1) {
+    }
+
+    else if (s2 > s1) {
 
       p2.wins++;
+
       p2.points += 3;
 
       p1.losses++;
 
-    } else {
+    }
+
+    else {
 
       p1.draws++;
+
       p2.draws++;
 
       p1.points++;
+
       p2.points++;
 
     }
@@ -2230,28 +2421,63 @@ async function loadLeagueTable() {
   });
 
 
-  Object.values(stats).forEach(player => {
+  Object.values(stats).forEach(
+    player => {
 
-    player.gd =
-      player.gf -
-      player.ga;
+      player.gd =
+        player.gf -
+        player.ga;
 
-  });
+    }
+  );
 
 
   const rows =
     Object.values(stats)
     .sort((a, b) => {
 
-      if (b.points !== a.points) {
-        return b.points - a.points;
+      if (
+        b.points !==
+        a.points
+      ) {
+
+        return (
+          b.points -
+          a.points
+        );
+
       }
 
-      if (b.gd !== a.gd) {
-        return b.gd - a.gd;
+
+      if (
+        b.gd !==
+        a.gd
+      ) {
+
+        return (
+          b.gd -
+          a.gd
+        );
+
       }
 
-      return b.gf - a.gf;
+
+      if (
+        b.gf !==
+        a.gf
+      ) {
+
+        return (
+          b.gf -
+          a.gf
+        );
+
+      }
+
+
+      return a.name.localeCompare(
+        b.name
+      );
 
     });
 
@@ -2267,120 +2493,147 @@ async function loadLeagueTable() {
 
   let html = `
 
-    <div style="overflow-x:auto;">
+    <div class="table-wrapper">
 
-      <table
-        style="
-          width:100%;
-          border-collapse:collapse;
-          font-size:13px;
-        "
-      >
+      <table class="league-table">
 
-        <tr style="background:#075e2b;color:white;">
+        <thead>
 
-          <th style="padding:8px;">#</th>
+          <tr>
 
-          <th style="padding:8px;">
-            Mchezaji
-          </th>
+            <th>#</th>
 
-          <th style="padding:8px;">
-            P
-          </th>
+            <th>Mchezaji</th>
 
-          <th style="padding:8px;">
-            W
-          </th>
+            <th>P</th>
 
-          <th style="padding:8px;">
-            D
-          </th>
+            <th>W</th>
 
-          <th style="padding:8px;">
-            L
-          </th>
+            <th>D</th>
 
-          <th style="padding:8px;">
-            GF
-          </th>
+            <th>L</th>
 
-          <th style="padding:8px;">
-            GA
-          </th>
+            <th>GF</th>
 
-          <th style="padding:8px;">
-            GD
-          </th>
+            <th>GA</th>
 
-          <th style="padding:8px;">
-            Pts
-          </th>
+            <th>GD</th>
 
-        </tr>
+            <th>Pts</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
   `;
 
 
-  rows.forEach((player, index) => {
+  rows.forEach(
+    (player, index) => {
 
-    html += `
+      const position =
+        index + 1;
 
-      <tr style="border-bottom:1px solid #ddd;">
 
-        <td style="padding:8px;text-align:center;">
-          ${index + 1}
-        </td>
+      html += `
 
-        <td style="padding:8px;">
-          ${escapeHTML(player.name)}
-        </td>
+        <tr
+          class="${
+            position === 1
+              ? "position-1"
+              : ""
+          }"
+        >
 
-        <td style="padding:8px;text-align:center;">
-          ${player.played}
-        </td>
+          <td>
+            ${
+              position === 1
+                ? "🥇"
+                : position === 2
+                ? "🥈"
+                : position === 3
+                ? "🥉"
+                : position
+            }
+          </td>
 
-        <td style="padding:8px;text-align:center;">
-          ${player.wins}
-        </td>
+          <td>
+            ${escapeHTML(player.name)}
+          </td>
 
-        <td style="padding:8px;text-align:center;">
-          ${player.draws}
-        </td>
+          <td>
+            ${player.played}
+          </td>
 
-        <td style="padding:8px;text-align:center;">
-          ${player.losses}
-        </td>
+          <td>
+            ${player.wins}
+          </td>
 
-        <td style="padding:8px;text-align:center;">
-          ${player.gf}
-        </td>
+          <td>
+            ${player.draws}
+          </td>
 
-        <td style="padding:8px;text-align:center;">
-          ${player.ga}
-        </td>
+          <td>
+            ${player.losses}
+          </td>
 
-        <td style="padding:8px;text-align:center;">
-          ${player.gd}
-        </td>
+          <td>
+            ${player.gf}
+          </td>
 
-        <td style="padding:8px;text-align:center;font-weight:bold;">
-          ${player.points}
-        </td>
+          <td>
+            ${player.ga}
+          </td>
 
-      </tr>
+          <td>
+            ${player.gd}
+          </td>
 
-    `;
+          <td>
+            <strong>
+              ${player.points}
+            </strong>
+          </td>
 
-  });
+        </tr>
+
+      `;
+
+    }
+  );
 
 
   html += `
+
+        </tbody>
+
       </table>
+
     </div>
+
+    <div
+      style="
+        margin-top:12px;
+        font-size:12px;
+        color:#666;
+        text-align:center;
+      "
+    >
+      P = Mechi &nbsp; W = Ushindi &nbsp;
+      D = Sare &nbsp; L = Kufungwa &nbsp;
+      GF = Magoli ya Kufunga &nbsp;
+      GA = Magoli ya Kufungwa &nbsp;
+      GD = Tofauti ya Magoli &nbsp;
+      Pts = Pointi
+    </div>
+
   `;
 
 
   table.innerHTML = html;
+
 }
 
 
@@ -2422,6 +2675,7 @@ async function approvePlayer(playerId) {
 
   loadPlayers();
   loadApprovedPlayersForFixtures();
+  loadLeagueTable();
 }
 
 
@@ -2480,6 +2734,7 @@ async function deletePlayer(
 
   loadPlayers();
   loadApprovedPlayersForFixtures();
+  loadLeagueTable();
 }
 
 
