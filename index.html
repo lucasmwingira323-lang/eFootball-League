@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="sw">
+<!DOCTYPE html><html lang="sw">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>eFOOTBALL LEAGUE</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
+  <title>eFOOTBALL LEAGUE</title>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -140,6 +135,74 @@
       color: #075e2b;
       border-bottom: 2px solid #075e2b;
       padding-bottom: 8px;
+    }
+
+    /* =========================
+       MATANGAZO YA MECHI
+    ========================= */
+
+    .match-announcements {
+      background: linear-gradient(
+        135deg,
+        #075e2b,
+        #0b8f45
+      );
+      color: white;
+      padding: 18px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .match-announcements h3 {
+      margin: 0 0 12px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .match-ad {
+      background: white;
+      color: #111;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .match-ad-title {
+      color: #075e2b;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .match-players {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 12px 0;
+      line-height: 1.5;
+    }
+
+    .match-date {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .match-status {
+      display: inline-block;
+      background: #075e2b;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .match-empty {
+      text-align: center;
+      background: rgba(255,255,255,0.12);
+      padding: 12px;
+      border-radius: 10px;
     }
 
     /* =========================
@@ -282,544 +345,497 @@
       padding: 20px;
       color: #666;
     }
-  </style>
-</head>
-
-<body>
-
-<header>
+  </style></head><body><header>
   <h1>🏆 eFOOTBALL LEAGUE</h1>
   <p>⚽ 1v1 Online Competition</p>
-</header>
+</header><div class="container">  <!-- HOME -->  <div class="card" id="home"><h2>Karibu eFOOTBALL LEAGUE</h2>
 
-<div class="container">
+<p>
+  Jiunge na mashindano ya 1v1 ya eFootball.
+</p>
 
-  <!-- HOME -->
-  <div class="card" id="home">
+<!-- MATANGAZO YA MECHI -->
 
-    <h2>Karibu eFOOTBALL LEAGUE</h2>
+<div class="match-announcements">
 
-    <p>
-      Jiunge na mashindano ya 1v1 ya eFootball.
-    </p>
+  <h3>
+    📢 MATANGAZO YA MECHI
+  </h3>
 
-    <button onclick="showRegister()">
-      📝 JISAJILI
-    </button>
-
-    <button onclick="showLeagueTable()">
-      🏆 LEAGUE TABLE
-    </button>
-
-    <button onclick="showFixtures()">
-      📅 FIXTURES
-    </button>
-
-    <button onclick="showResults()">
-      📊 RESULTS
-    </button>
-
-    <button onclick="showPrizes()">
-      🎁 ZAWADI
-    </button>
-
-    <button onclick="showAdminLogin()">
-      🔐 ADMIN
-    </button>
-
-  </div>
-
-
-  <!-- REGISTER -->
-  <div class="card hidden" id="register">
-
-    <h2>📝 Usajili wa Mchezaji</h2>
-
-    <label>Jina Kamili</label>
-
-    <input
-      id="playerName"
-      type="text"
-      placeholder="Andika jina lako"
-    >
-
-    <label>eFootball Username</label>
-
-    <input
-      id="username"
-      type="text"
-      placeholder="Andika username yako"
-    >
-
-    <label>Namba ya WhatsApp</label>
-
-    <input
-      id="whatsapp"
-      type="tel"
-      placeholder="Mfano: 07XXXXXXXX"
-    >
-
-    <div class="notice">
-      ⚠️ Tumia akaunti yako mwenyewe ya
-      eFootball/KONAMI na kikosi chako mwenyewe.
-
-      <br><br>
-
-      🚫 Usiweke password yako hapa.
-    </div>
-
-    <label>
-
-      <input
-        id="ownAccount"
-        type="checkbox"
-        style="width:auto;"
-      >
-
-      Ninathibitisha kuwa natumia akaunti yangu
-      na kikosi changu mwenyewe.
-
-    </label>
-
-    <button onclick="submitRegistration()">
-      ✅ JISAJILI
-    </button>
-
-    <button onclick="goHome()">
-      ⬅️ RUDI
-    </button>
-
-  </div>
-
-
-  <!-- ADMIN LOGIN -->
-  <div class="card hidden admin-card" id="adminLogin">
-
-    <h2>🔐 Admin Login</h2>
-
-    <label>Email</label>
-
-    <input
-      id="adminEmail"
-      type="email"
-      placeholder="Admin Email"
-    >
-
-    <label>Password</label>
-
-    <input
-      id="adminPassword"
-      type="password"
-      placeholder="Password"
-    >
-
-    <button onclick="adminLogin()">
-      🔑 INGIA ADMIN
-    </button>
-
-    <button onclick="goHome()">
-      ⬅️ RUDI
-    </button>
-
-  </div>
-
-
-  <!-- PUBLIC FIXTURES -->
-  <div class="card hidden" id="fixturesPage">
-
-    <h2 class="section-title">📅 FIXTURES</h2>
-
-    <div id="publicFixtures">
-      ⏳ Inapakia fixtures...
-    </div>
-
-    <button onclick="loadPublicFixtures()">
-      🔄 REFRESH FIXTURES
-    </button>
-
-    <button onclick="goHome()">
-      ⬅️ RUDI
-    </button>
-
-  </div>
-
-
-  <!-- PUBLIC RESULTS -->
-  <div class="card hidden" id="resultsPage">
-
-    <h2 class="section-title">📊 RESULTS</h2>
-
-    <div id="publicResults">
-      ⏳ Inapakia results...
-    </div>
-
-    <button onclick="loadPublicResults()">
-      🔄 REFRESH RESULTS
-    </button>
-
-    <button onclick="goHome()">
-      ⬅️ RUDI
-    </button>
-
-  </div>
-
-
-  <!-- ZAWADI -->
-  <div class="card hidden" id="prizesPage">
-
-    <h2 class="section-title">
-      🎁 ZAWADI ZA LIGI
-    </h2>
-
-    <div class="notice">
-      🏆 Zawadi zitatolewa kwa wachezaji
-      watakaomaliza ligi katika nafasi zilizoainishwa hapa.
-      💰 Zawadi ni kwa Shilingi za Tanzania.
-    </div>
-
-
-    <!-- FIRST PRIZE -->
-
-    <div class="prize-card">
-
-      <h3>🥇 NAFASI YA 1</h3>
-
-      <img
-        class="money-image"
-        src="https://commons.wikimedia.org/wiki/Special:FilePath/10%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-        alt="Noti ya Shilingi 10,000 ya Tanzania"
-        loading="lazy"
-      >
-
-      <div class="prize-money" id="publicFirstPrize">
-        ⏳ Inapakia...
-      </div>
-
-      <div class="prize-label">
-        💰 Zawadi ya Bingwa
-      </div>
-
-      <p>
-        🏆 Bingwa wa eFOOTBALL LEAGUE
-      </p>
-
-    </div>
-
-
-    <!-- SECOND PRIZE -->
-
-    <div class="prize-card">
-
-      <h3>🥈 NAFASI YA 2</h3>
-
-      <div class="money-stack">
-
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
-          alt="Noti ya Shilingi 5,000 ya Tanzania"
-          loading="lazy"
-        >
-
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
-          alt="Noti ya Shilingi 5,000 ya Tanzania"
-          loading="lazy"
-        >
-
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
-          alt="Noti ya Shilingi 5,000 ya Tanzania"
-          loading="lazy"
-        >
-
-      </div>
-
-      <div class="prize-money" id="publicSecondPrize">
-        ⏳ Inapakia...
-      </div>
-
-      <div class="prize-label">
-        💰 Zawadi ya mshindi wa pili
-      </div>
-
-      <p>
-        🏆 Mshindi wa pili
-      </p>
-
-    </div>
-
-
-    <!-- THIRD PRIZE -->
-
-    <div class="prize-card">
-
-      <h3>🥉 NAFASI YA 3</h3>
-
-      <div class="money-stack">
-
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-          alt="Noti ya Shilingi 2,000 ya Tanzania"
-          loading="lazy"
-        >
-
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-          alt="Noti ya Shilingi 2,000 ya Tanzania"
-          loading="lazy"
-        >
-
-        <img
-          src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
-          alt="Noti ya Shilingi 2,000 ya Tanzania"
-          loading="lazy"
-        >
-
-      </div>
-
-      <div class="prize-money" id="publicThirdPrize">
-        ⏳ Inapakia...
-      </div>
-
-      <div class="prize-label">
-        💰 Zawadi ya mshindi wa tatu
-      </div>
-
-      <p>
-        🏆 Mshindi wa tatu
-      </p>
-
-    </div>
-
-
-    <div class="prize-date">
-
-      📅 <strong>Tarehe ya mwisho ya ligi</strong>
-
-      <br><br>
-
-      <span id="publicEndDate">
-        ⏳ Inapakia...
-      </span>
-
-    </div>
-
-
-    <div class="notice">
-
-      ℹ️ Nafasi za mwisho zitaamuliwa
-      kwa kuzingatia matokeo na pointi
-      kwenye League Table.
-
-    </div>
-
-
-    <button onclick="goHome()">
-      ⬅️ RUDI
-    </button>
-
-  </div>
-
-
-  <!-- LEAGUE TABLE -->
-  <div class="card hidden" id="leaguePage">
-
-    <h2 class="section-title">
-      🏆 LEAGUE TABLE
-    </h2>
-
-    <div class="live-badge">
-      🔴 LIVE — INAJISASISHA YENYEWE
-    </div>
-
-    <div class="notice">
-      🔄 Jedwali hili linasasishwa moja kwa moja
-      baada ya matokeo mapya kuwekwa.
-    </div>
-
-    <div id="leagueTable">
-      ⏳ Inapakia league table...
-    </div>
-
-    <button onclick="loadLeagueTable()">
-      🔄 REFRESH TABLE
-    </button>
-
-    <button onclick="goHome()">
-      ⬅️ RUDI
-    </button>
-
-  </div>
-
-
-  <!-- ADMIN PANEL -->
-  <div class="card hidden admin-card" id="adminPanel">
-
-    <h2>👑 ADMIN PANEL</h2>
-
-    <p>
-      Karibu Admin.
-    </p>
-
-    <hr>
-
-
-    <!-- MANAGE PRIZES -->
-    <h3 class="section-title">
-      🎁 SIMAMIA ZAWADI
-    </h3>
-
-    <div class="admin-prize-box">
-
-      <div class="notice">
-        ⚙️ Hapa Admin anaweza kubadilisha
-        zawadi na tarehe ya mwisho ya ligi.
-      </div>
-
-      <label>
-        🥇 Zawadi ya Nafasi ya 1
-      </label>
-
-      <input
-        id="adminFirstPrize"
-        type="number"
-        min="0"
-        placeholder="100000"
-      >
-
-
-      <label>
-        🥈 Zawadi ya Nafasi ya 2
-      </label>
-
-      <input
-        id="adminSecondPrize"
-        type="number"
-        min="0"
-        placeholder="50000"
-      >
-
-
-      <label>
-        🥉 Zawadi ya Nafasi ya 3
-      </label>
-
-      <input
-        id="adminThirdPrize"
-        type="number"
-        min="0"
-        placeholder="25000"
-      >
-
-
-      <label>
-        📅 Tarehe ya mwisho ya ligi
-      </label>
-
-      <input
-        id="adminEndDate"
-        type="date"
-      >
-
-
-      <button onclick="savePrizes()">
-        💾 HIFADHI ZAWADI
-      </button>
-
-      <button onclick="loadAdminPrizes()">
-        🔄 REFRESH ZAWADI
-      </button>
-
-    </div>
-
-
-    <hr>
-
-
-    <!-- PLAYERS -->
-    <h3 class="section-title">
-      👥 Wachezaji Waliojisajili
-    </h3>
-
-    <div id="playersList">
-      Inapakia...
-    </div>
-
-    <button onclick="loadPlayers()">
-      🔄 REFRESH WACHEZAJI
-    </button>
-
-    <hr>
-
-
-    <!-- CREATE FIXTURE -->
-    <h3 class="section-title">
-      📅 TENGENEZA FIXTURE
-    </h3>
-
-    <label>Mchezaji 1</label>
-
-    <select id="fixturePlayer1">
-      <option value="">
-        -- Chagua Mchezaji 1 --
-      </option>
-    </select>
-
-    <label>Mchezaji 2</label>
-
-    <select id="fixturePlayer2">
-      <option value="">
-        -- Chagua Mchezaji 2 --
-      </option>
-    </select>
-
-    <label>Tarehe na Muda</label>
-
-    <input
-      id="fixtureDate"
-      type="datetime-local"
-    >
-
-    <button onclick="createFixture()">
-      📅 TENGENEZA FIXTURE
-    </button>
-
-    <hr>
-
-
-    <!-- ADMIN FIXTURES -->
-    <h3 class="section-title">
-      📅 FIXTURES ZILIZOTENGENEZWA
-    </h3>
-
-    <div id="adminFixtures">
-      ⏳ Inapakia fixtures...
-    </div>
-
-    <button onclick="loadAdminFixtures()">
-      🔄 REFRESH FIXTURES
-    </button>
-
-    <hr>
-
-    <button
-      class="logout"
-      onclick="adminLogout()"
-    >
-      🚪 LOGOUT
-    </button>
-
+  <div id="matchAnnouncements">
+    ⏳ Inapakia matangazo...
   </div>
 
 </div>
 
 
-<footer>
+<button onclick="showRegister()">
+  📝 JISAJILI
+</button>
+
+<button onclick="showLeagueTable()">
+  🏆 LEAGUE TABLE
+</button>
+
+<button onclick="showFixtures()">
+  📅 FIXTURES
+</button>
+
+<button onclick="showResults()">
+  📊 RESULTS
+</button>
+
+<button onclick="showPrizes()">
+  🎁 ZAWADI
+</button>
+
+<button onclick="showAdminLogin()">
+  🔐 ADMIN
+</button>
+
+  </div>  <!-- REGISTER -->  <div class="card hidden" id="register"><h2>📝 Usajili wa Mchezaji</h2>
+
+<label>Jina Kamili</label>
+
+<input
+  id="playerName"
+  type="text"
+  placeholder="Andika jina lako"
+>
+
+<label>eFootball Username</label>
+
+<input
+  id="username"
+  type="text"
+  placeholder="Andika username yako"
+>
+
+<label>Namba ya WhatsApp</label>
+
+<input
+  id="whatsapp"
+  type="tel"
+  placeholder="Mfano: 07XXXXXXXX"
+>
+
+<div class="notice">
+  ⚠️ Tumia akaunti yako mwenyewe ya
+  eFootball/KONAMI na kikosi chako mwenyewe.
+
+  <br><br>
+
+  🚫 Usiweke password yako hapa.
+</div>
+
+<label>
+
+  <input
+    id="ownAccount"
+    type="checkbox"
+    style="width:auto;"
+  >
+
+  Ninathibitisha kuwa natumia akaunti yangu
+  na kikosi changu mwenyewe.
+
+</label>
+
+<button onclick="submitRegistration()">
+  ✅ JISAJILI
+</button>
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- ADMIN LOGIN -->  <div class="card hidden admin-card" id="adminLogin"><h2>🔐 Admin Login</h2>
+
+<label>Email</label>
+
+<input
+  id="adminEmail"
+  type="email"
+  placeholder="Admin Email"
+>
+
+<label>Password</label>
+
+<input
+  id="adminPassword"
+  type="password"
+  placeholder="Password"
+>
+
+<button onclick="adminLogin()">
+  🔑 INGIA ADMIN
+</button>
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- PUBLIC FIXTURES -->  <div class="card hidden" id="fixturesPage"><h2 class="section-title">📅 FIXTURES</h2>
+
+<div id="publicFixtures">
+  ⏳ Inapakia fixtures...
+</div>
+
+<button onclick="loadPublicFixtures()">
+  🔄 REFRESH FIXTURES
+</button>
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- PUBLIC RESULTS -->  <div class="card hidden" id="resultsPage"><h2 class="section-title">📊 RESULTS</h2>
+
+<div id="publicResults">
+  ⏳ Inapakia results...
+</div>
+
+<button onclick="loadPublicResults()">
+  🔄 REFRESH RESULTS
+</button>
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- ZAWADI -->  <div class="card hidden" id="prizesPage"><h2 class="section-title">
+  🎁 ZAWADI ZA LIGI
+</h2>
+
+<div class="notice">
+  🏆 Zawadi zitatolewa kwa wachezaji
+  watakaomaliza ligi katika nafasi zilizoainishwa hapa.
+  💰 Zawadi ni kwa Shilingi za Tanzania.
+</div>
+
+
+<!-- FIRST PRIZE -->
+
+<div class="prize-card">
+
+  <h3>🥇 NAFASI YA 1</h3>
+
+  <img
+    class="money-image"
+    src="https://commons.wikimedia.org/wiki/Special:FilePath/10%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+    alt="Noti ya Shilingi 10,000 ya Tanzania"
+    loading="lazy"
+  >
+
+  <div class="prize-money" id="publicFirstPrize">
+    ⏳ Inapakia...
+  </div>
+
+  <div class="prize-label">
+    💰 Zawadi ya Bingwa
+  </div>
+
+  <p>
+    🏆 Bingwa wa eFOOTBALL LEAGUE
+  </p>
+
+</div>
+
+
+<!-- SECOND PRIZE -->
+
+<div class="prize-card">
+
+  <h3>🥈 NAFASI YA 2</h3>
+
+  <div class="money-stack">
+
+    <img
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
+      alt="Noti ya Shilingi 5,000 ya Tanzania"
+      loading="lazy"
+    >
+
+    <img
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
+      alt="Noti ya Shilingi 5,000 ya Tanzania"
+      loading="lazy"
+    >
+
+    <img
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/5%2C000%20Tanzanian%20shillings%20banknote%202011%20-%20obverse.jpg"
+      alt="Noti ya Shilingi 5,000 ya Tanzania"
+      loading="lazy"
+    >
+
+  </div>
+
+  <div class="prize-money" id="publicSecondPrize">
+    ⏳ Inapakia...
+  </div>
+
+  <div class="prize-label">
+    💰 Zawadi ya mshindi wa pili
+  </div>
+
+  <p>
+    🏆 Mshindi wa pili
+  </p>
+
+</div>
+
+
+<!-- THIRD PRIZE -->
+
+<div class="prize-card">
+
+  <h3>🥉 NAFASI YA 3</h3>
+
+  <div class="money-stack">
+
+    <img
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+      alt="Noti ya Shilingi 2,000 ya Tanzania"
+      loading="lazy"
+    >
+
+    <img
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+      alt="Noti ya Shilingi 2,000 ya Tanzania"
+      loading="lazy"
+    >
+
+    <img
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/2%2C000%20Tanzanian%20shillings%20banknote%2C%202011%20serie%2C%20obverse.jpg"
+      alt="Noti ya Shilingi 2,000 ya Tanzania"
+      loading="lazy"
+    >
+
+  </div>
+
+  <div class="prize-money" id="publicThirdPrize">
+    ⏳ Inapakia...
+  </div>
+
+  <div class="prize-label">
+    💰 Zawadi ya mshindi wa tatu
+  </div>
+
+  <p>
+    🏆 Mshindi wa tatu
+  </p>
+
+</div>
+
+
+<div class="prize-date">
+
+  📅 <strong>Tarehe ya mwisho ya ligi</strong>
+
+  <br><br>
+
+  <span id="publicEndDate">
+    ⏳ Inapakia...
+  </span>
+
+</div>
+
+
+<div class="notice">
+
+  ℹ️ Nafasi za mwisho zitaamuliwa
+  kwa kuzingatia matokeo na pointi
+  kwenye League Table.
+
+</div>
+
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- LEAGUE TABLE -->  <div class="card hidden" id="leaguePage"><h2 class="section-title">
+  🏆 LEAGUE TABLE
+</h2>
+
+<div class="live-badge">
+  🔴 LIVE — INAJISASISHA YENYEWE
+</div>
+
+<div class="notice">
+  🔄 Jedwali hili linasasishwa moja kwa moja
+  baada ya matokeo mapya kuwekwa.
+</div>
+
+<div id="leagueTable">
+  ⏳ Inapakia league table...
+</div>
+
+<button onclick="loadLeagueTable()">
+  🔄 REFRESH TABLE
+</button>
+
+<button onclick="goHome()">
+  ⬅️ RUDI
+</button>
+
+  </div>  <!-- ADMIN PANEL -->  <div class="card hidden admin-card" id="adminPanel"><h2>👑 ADMIN PANEL</h2>
+
+<p>
+  Karibu Admin.
+</p>
+
+<hr>
+
+
+<!-- MANAGE PRIZES -->
+<h3 class="section-title">
+  🎁 SIMAMIA ZAWADI
+</h3>
+
+<div class="admin-prize-box">
+
+  <div class="notice">
+    ⚙️ Hapa Admin anaweza kubadilisha
+    zawadi na tarehe ya mwisho ya ligi.
+  </div>
+
+  <label>
+    🥇 Zawadi ya Nafasi ya 1
+  </label>
+
+  <input
+    id="adminFirstPrize"
+    type="number"
+    min="0"
+    placeholder="100000"
+  >
+
+
+  <label>
+    🥈 Zawadi ya Nafasi ya 2
+  </label>
+
+  <input
+    id="adminSecondPrize"
+    type="number"
+    min="0"
+    placeholder="50000"
+  >
+
+
+  <label>
+    🥉 Zawadi ya Nafasi ya 3
+  </label>
+
+  <input
+    id="adminThirdPrize"
+    type="number"
+    min="0"
+    placeholder="25000"
+  >
+
+
+  <label>
+    📅 Tarehe ya mwisho ya ligi
+  </label>
+
+  <input
+    id="adminEndDate"
+    type="date"
+  >
+
+
+  <button onclick="savePrizes()">
+    💾 HIFADHI ZAWADI
+  </button>
+
+  <button onclick="loadAdminPrizes()">
+    🔄 REFRESH ZAWADI
+  </button>
+
+</div>
+
+
+<hr>
+
+
+<!-- PLAYERS -->
+<h3 class="section-title">
+  👥 Wachezaji Waliojisajili
+</h3>
+
+<div id="playersList">
+  Inapakia...
+</div>
+
+<button onclick="loadPlayers()">
+  🔄 REFRESH WACHEZAJI
+</button>
+
+<hr>
+
+
+<!-- CREATE FIXTURE -->
+<h3 class="section-title">
+  📅 TENGENEZA FIXTURE
+</h3>
+
+<label>Mchezaji 1</label>
+
+<select id="fixturePlayer1">
+  <option value="">
+    -- Chagua Mchezaji 1 --
+  </option>
+</select>
+
+<label>Mchezaji 2</label>
+
+<select id="fixturePlayer2">
+  <option value="">
+    -- Chagua Mchezaji 2 --
+  </option>
+</select>
+
+<label>Tarehe na Muda</label>
+
+<input
+  id="fixtureDate"
+  type="datetime-local"
+>
+
+<button onclick="createFixture()">
+  📅 TENGENEZA FIXTURE
+</button>
+
+<hr>
+
+
+<!-- ADMIN FIXTURES -->
+<h3 class="section-title">
+  📅 FIXTURES ZILIZOTENGENEZWA
+</h3>
+
+<div id="adminFixtures">
+  ⏳ Inapakia fixtures...
+</div>
+
+<button onclick="loadAdminFixtures()">
+  🔄 REFRESH FIXTURES
+</button>
+
+<hr>
+
+<button
+  class="logout"
+  onclick="adminLogout()"
+>
+  🚪 LOGOUT
+</button>
+
+  </div></div><footer>
   eFOOTBALL LEAGUE © 2026
-</footer>
-
-
-<script>
+</footer><script>
 
 const SUPABASE_URL =
   "https://hhobdbhdaesvlxzjvsfh.supabase.co";
@@ -864,8 +880,10 @@ function startLeagueRealtime() {
           payload
         );
 
-        loadLeagueTable();
+        /* MATANGAZO */
+        loadMatchAnnouncements();
 
+        /* LEAGUE TABLE */
         const leaguePage =
           document.getElementById("leaguePage");
 
@@ -876,6 +894,7 @@ function startLeagueRealtime() {
           loadLeagueTable();
         }
 
+        /* RESULTS */
         const resultsPage =
           document.getElementById("resultsPage");
 
@@ -886,6 +905,7 @@ function startLeagueRealtime() {
           loadPublicResults();
         }
 
+        /* FIXTURES */
         const fixturesPage =
           document.getElementById("fixturesPage");
 
@@ -896,6 +916,7 @@ function startLeagueRealtime() {
           loadPublicFixtures();
         }
 
+        /* ADMIN */
         const adminPanel =
           document.getElementById("adminPanel");
 
@@ -919,7 +940,188 @@ function startLeagueRealtime() {
     });
 }
 
+
+/* =========================
+   START LIVE SYSTEM
+========================= */
+
 startLeagueRealtime();
+
+
+/* =========================
+   LOAD MATCH ANNOUNCEMENTS
+========================= */
+
+async function loadMatchAnnouncements() {
+
+  const box =
+    document.getElementById(
+      "matchAnnouncements"
+    );
+
+  if (!box) {
+    return;
+  }
+
+
+  box.innerHTML =
+    "⏳ Inapakia matangazo...";
+
+
+  const now =
+    new Date().toISOString();
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("fixtures")
+    .select(`
+      id,
+      match_date,
+      status,
+      player1:players!fixtures_player1_id_fkey(
+        player_name,
+        username
+      ),
+      player2:players!fixtures_player2_id_fkey(
+        player_name,
+        username
+      )
+    `)
+    .eq("status", "scheduled")
+    .gte("match_date", now)
+    .order("match_date", {
+      ascending: true
+    })
+    .limit(5);
+
+
+  if (error) {
+
+    console.error(
+      "MATCH ANNOUNCEMENT ERROR:",
+      error
+    );
+
+    box.innerHTML = `
+      <div class="match-empty">
+        ❌ Imeshindikana kupata matangazo.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    box.innerHTML = `
+      <div class="match-empty">
+        📭 Hakuna mechi ijayo kwa sasa.
+        <br><br>
+        ⚽ Subiri Admin atengeneze fixture mpya.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  box.innerHTML = "";
+
+
+  data.forEach((fixture, index) => {
+
+    const player1Name =
+      fixture.player1
+      ? fixture.player1.player_name
+      : "Mchezaji 1";
+
+
+    const player2Name =
+      fixture.player2
+      ? fixture.player2.player_name
+      : "Mchezaji 2";
+
+
+    const date =
+      fixture.match_date
+      ? new Date(
+          fixture.match_date
+        )
+      : null;
+
+
+    let dateText =
+      "Haijawekwa";
+
+
+    if (date) {
+
+      dateText =
+        date.toLocaleDateString(
+          "sw-TZ",
+          {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          }
+        ) +
+        " • " +
+        date.toLocaleTimeString(
+          "sw-TZ",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+    }
+
+
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "match-ad";
+
+
+    div.innerHTML = `
+
+      <div class="match-ad-title">
+        ${
+          index === 0
+          ? "🔥 MECHI IJAYO"
+          : "📢 MECHI INAKUJA"
+        }
+      </div>
+
+      <div class="match-players">
+        ⚽ ${escapeHTML(player1Name)}
+        <br>
+        <span style="font-size:14px;color:#777;">
+          VS
+        </span>
+        <br>
+        ⚽ ${escapeHTML(player2Name)}
+      </div>
+
+      <div class="match-date">
+        📅 ${escapeHTML(dateText)}
+      </div>
+
+      <div class="match-status">
+        🟢 IMEANDALIWA
+      </div>
+
+    `;
+
+
+    box.appendChild(div);
+
+  });
+
+}
 
 
 /* =========================
@@ -1786,8 +1988,9 @@ async function createFixture() {
     .value = "";
 
 
-  loadAdminFixtures();
-  loadPublicFixtures();
+  await loadAdminFixtures();
+  await loadPublicFixtures();
+  await loadMatchAnnouncements();
 }
 
 
@@ -2062,6 +2265,8 @@ async function saveResult(fixtureId) {
   await loadAdminFixtures();
   await loadPublicResults();
   await loadLeagueTable();
+  await loadPublicFixtures();
+  await loadMatchAnnouncements();
 }
 
 
@@ -2114,6 +2319,7 @@ async function deleteFixture(fixtureId) {
   await loadPublicFixtures();
   await loadPublicResults();
   await loadLeagueTable();
+  await loadMatchAnnouncements();
 }
 
 
@@ -2779,9 +2985,10 @@ async function approvePlayer(playerId) {
   );
 
 
-  loadPlayers();
-  loadApprovedPlayersForFixtures();
-  loadLeagueTable();
+  await loadPlayers();
+  await loadApprovedPlayersForFixtures();
+  await loadLeagueTable();
+
 }
 
 
@@ -2838,9 +3045,10 @@ async function deletePlayer(
   );
 
 
-  loadPlayers();
-  loadApprovedPlayersForFixtures();
-  loadLeagueTable();
+  await loadPlayers();
+  await loadApprovedPlayersForFixtures();
+  await loadLeagueTable();
+
 }
 
 
@@ -2976,12 +3184,14 @@ function hideAllPages() {
    HOME
 ========================= */
 
-function goHome() {
+async function goHome() {
 
   hideAllPages();
 
   document.getElementById("home")
     .classList.remove("hidden");
+
+  await loadMatchAnnouncements();
 }
 
 
@@ -3038,7 +3248,12 @@ function escapeJS(value) {
     .replace(/\n/g, "\\n");
 }
 
-</script>
 
-</body>
-</html>
+/* =========================
+   INITIAL LOAD
+========================= */
+
+loadMatchAnnouncements();
+
+</script></body>
+  </html>
