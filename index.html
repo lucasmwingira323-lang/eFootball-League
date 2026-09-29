@@ -79,6 +79,25 @@
       font-size: 14px;
     }
 
+    .admin-card {
+      border-left: 5px solid #075e2b;
+    }
+
+    .player {
+      background: #f4f7f5;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .player strong {
+      color: #075e2b;
+    }
+
+    .logout {
+      background: #b00020;
+    }
+
     .hidden {
       display: none;
     }
@@ -100,93 +119,227 @@
 
 <div class="container">
 
+  <!-- HOME -->
   <div class="card" id="home">
-    <h2>Karibu eFOOTBALL LEAGUE</h2>
-    <p>Jiunge na mashindano ya 1v1 ya eFootball.</p>
 
-    <button onclick="showRegister()">📝 JISAJILI</button>
+    <h2>Karibu eFOOTBALL LEAGUE</h2>
+
+    <p>
+      Jiunge na mashindano ya 1v1 ya eFootball.
+    </p>
+
+    <button onclick="showRegister()">
+      📝 JISAJILI
+    </button>
+
     <button onclick="showMessage('🏆 League Table itakuja hapa.')">
       🏆 LEAGUE TABLE
     </button>
+
     <button onclick="showMessage('📅 Fixtures zitakuja hapa.')">
       📅 FIXTURES
     </button>
+
     <button onclick="showMessage('📊 Results zitaonekana hapa.')">
       📊 RESULTS
     </button>
+
+    <button onclick="showAdminLogin()">
+      🔐 ADMIN
+    </button>
+
   </div>
 
+
+  <!-- REGISTER -->
   <div class="card hidden" id="register">
 
     <h2>📝 Usajili wa Mchezaji</h2>
 
     <label>Jina Kamili</label>
-    <input id="playerName" type="text" placeholder="Andika jina lako">
+
+    <input
+      id="playerName"
+      type="text"
+      placeholder="Andika jina lako"
+    >
 
     <label>eFootball Username</label>
-    <input id="username" type="text" placeholder="Andika username yako">
+
+    <input
+      id="username"
+      type="text"
+      placeholder="Andika username yako"
+    >
 
     <label>Namba ya WhatsApp</label>
-    <input id="whatsapp" type="tel" placeholder="Mfano: 07XXXXXXXX">
+
+    <input
+      id="whatsapp"
+      type="tel"
+      placeholder="Mfano: 07XXXXXXXX"
+    >
 
     <div class="notice">
-      ⚠️ Tumia akaunti yako mwenyewe ya eFootball/KONAMI
-      na kikosi chako mwenyewe.<br><br>
+
+      ⚠️ Tumia akaunti yako mwenyewe ya
+      eFootball/KONAMI na kikosi chako mwenyewe.
+
+      <br><br>
+
       🚫 Usiweke password yako hapa.
+
     </div>
 
     <label>
-      <input id="ownAccount" type="checkbox" style="width:auto;">
-      Ninathibitisha kuwa natumia akaunti yangu na kikosi changu mwenyewe.
+
+      <input
+        id="ownAccount"
+        type="checkbox"
+        style="width:auto;"
+      >
+
+      Ninathibitisha kuwa natumia akaunti yangu
+      na kikosi changu mwenyewe.
+
     </label>
 
-    <button onclick="submitRegistration()">✅ JISAJILI</button>
-    <button onclick="goHome()">⬅️ RUDI</button>
+    <button onclick="submitRegistration()">
+      ✅ JISAJILI
+    </button>
+
+    <button onclick="goHome()">
+      ⬅️ RUDI
+    </button>
+
+  </div>
+
+
+  <!-- ADMIN LOGIN -->
+  <div class="card hidden admin-card" id="adminLogin">
+
+    <h2>🔐 Admin Login</h2>
+
+    <label>Email</label>
+
+    <input
+      id="adminEmail"
+      type="email"
+      placeholder="Admin Email"
+    >
+
+    <label>Password</label>
+
+    <input
+      id="adminPassword"
+      type="password"
+      placeholder="Password"
+    >
+
+    <button onclick="adminLogin()">
+      🔑 INGIA ADMIN
+    </button>
+
+    <button onclick="goHome()">
+      ⬅️ RUDI
+    </button>
+
+  </div>
+
+
+  <!-- ADMIN PANEL -->
+  <div class="card hidden admin-card" id="adminPanel">
+
+    <h2>👑 ADMIN PANEL</h2>
+
+    <p>
+      Karibu Admin.
+    </p>
+
+    <hr>
+
+    <h3>👥 Wachezaji Waliojisajili</h3>
+
+    <div id="playersList">
+      Inapakia...
+    </div>
+
+    <button onclick="loadPlayers()">
+      🔄 REFRESH
+    </button>
+
+    <button class="logout" onclick="adminLogout()">
+      🚪 LOGOUT
+    </button>
 
   </div>
 
 </div>
 
+
 <footer>
   eFOOTBALL LEAGUE © 2026
 </footer>
 
+
 <script>
 
-const SUPABASE_URL = "https://hhobdbhdaesvlxzjvsfh.supabase.co";
+const SUPABASE_URL =
+  "https://hhobdbhdaesvlxzjvsfh.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_VJGlxIhg6uTndMLhYJR2mw_e4ApXVdi";
+const SUPABASE_KEY =
+  "sb_publishable_VJGlxIhg6uTndMLhYJR2mw_e4ApXVdi";
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================
+   PLAYER REGISTRATION
+========================= */
 
 async function submitRegistration() {
 
   const playerName =
-    document.getElementById("playerName").value.trim();
+    document.getElementById("playerName")
+    .value.trim();
 
   const username =
-    document.getElementById("username").value.trim();
+    document.getElementById("username")
+    .value.trim();
 
   const whatsapp =
-    document.getElementById("whatsapp").value.trim();
+    document.getElementById("whatsapp")
+    .value.trim();
 
   const ownAccount =
-    document.getElementById("ownAccount").checked;
+    document.getElementById("ownAccount")
+    .checked;
+
 
   if (!playerName || !username || !whatsapp) {
+
     alert("⚠️ Tafadhali jaza taarifa zote.");
+
     return;
   }
+
 
   if (!ownAccount) {
-    alert("⚠️ Tafadhali thibitisha kuwa unatumia akaunti na kikosi chako mwenyewe.");
+
+    alert(
+      "⚠️ Tafadhali thibitisha kuwa unatumia akaunti na kikosi chako mwenyewe."
+    );
+
     return;
   }
 
-  const { error } = await supabaseClient
+
+  const { error } =
+    await supabaseClient
     .from("players")
     .insert([
       {
@@ -197,34 +350,314 @@ async function submitRegistration() {
       }
     ]);
 
+
   if (error) {
+
     console.error(error);
-    alert("❌ Usajili umeshindikana. Jaribu tena.");
+
+    alert(
+      "❌ Usajili umeshindikana. Jaribu tena."
+    );
+
     return;
   }
 
-  alert("🎉 Umefanikiwa kujisajili kwenye eFOOTBALL LEAGUE!");
+
+  alert(
+    "🎉 Umefanikiwa kujisajili kwenye eFOOTBALL LEAGUE!"
+  );
+
 
   document.getElementById("playerName").value = "";
+
   document.getElementById("username").value = "";
+
   document.getElementById("whatsapp").value = "";
+
   document.getElementById("ownAccount").checked = false;
+
 
   goHome();
 }
 
-function showRegister() {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("register").classList.remove("hidden");
+
+/* =========================
+   ADMIN LOGIN PAGE
+========================= */
+
+function showAdminLogin() {
+
+  document.getElementById("home")
+    .classList.add("hidden");
+
+  document.getElementById("register")
+    .classList.add("hidden");
+
+  document.getElementById("adminPanel")
+    .classList.add("hidden");
+
+  document.getElementById("adminLogin")
+    .classList.remove("hidden");
 }
+
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+async function adminLogin() {
+
+  const email =
+    document.getElementById("adminEmail")
+    .value.trim();
+
+  const password =
+    document.getElementById("adminPassword")
+    .value;
+
+
+  if (!email || !password) {
+
+    alert(
+      "⚠️ Tafadhali weka email na password."
+    );
+
+    return;
+  }
+
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+
+      email: email,
+
+      password: password
+
+    });
+
+
+  if (error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Email au password si sahihi."
+    );
+
+    return;
+  }
+
+
+  const userEmail =
+    data.user.email;
+
+
+  const { data: admin, error: adminError } =
+    await supabaseClient
+    .from("admins")
+    .select("email")
+    .eq("email", userEmail)
+    .maybeSingle();
+
+
+  if (adminError || !admin) {
+
+    await supabaseClient.auth.signOut();
+
+    alert(
+      "🚫 Akaunti hii haina ruhusa ya Admin."
+    );
+
+    return;
+  }
+
+
+  document.getElementById("adminLogin")
+    .classList.add("hidden");
+
+  document.getElementById("adminPanel")
+    .classList.remove("hidden");
+
+
+  document.getElementById("adminEmail").value = "";
+
+  document.getElementById("adminPassword").value = "";
+
+
+  loadPlayers();
+}
+
+
+/* =========================
+   LOAD PLAYERS
+========================= */
+
+async function loadPlayers() {
+
+  const list =
+    document.getElementById("playersList");
+
+  list.innerHTML =
+    "⏳ Inapakia wachezaji...";
+
+
+  const { data, error } =
+    await supabaseClient
+    .from("players")
+    .select("*")
+    .order("created_at", {
+      ascending: false
+    });
+
+
+  if (error) {
+
+    console.error(error);
+
+    list.innerHTML =
+      "❌ Imeshindikana kupata wachezaji.";
+
+    return;
+  }
+
+
+  if (!data || data.length === 0) {
+
+    list.innerHTML =
+      "📭 Hakuna mchezaji aliyejisajili bado.";
+
+    return;
+  }
+
+
+  list.innerHTML = "";
+
+
+  data.forEach((player, index) => {
+
+    const div =
+      document.createElement("div");
+
+    div.className = "player";
+
+
+    div.innerHTML = `
+
+      <strong>👤 Mchezaji #${index + 1}</strong>
+
+      <br><br>
+
+      <strong>Jina:</strong>
+      ${escapeHTML(player.player_name)}
+
+      <br>
+
+      <strong>Username:</strong>
+      ${escapeHTML(player.username)}
+
+      <br>
+
+      <strong>WhatsApp:</strong>
+      ${escapeHTML(player.whatsapp)}
+
+      <br>
+
+      <strong>Status:</strong>
+      ${escapeHTML(player.status)}
+
+      <br>
+
+      <strong>Akaunti yake:</strong>
+      ${player.own_account ? "✅ Ndiyo" : "❌ Hapana"}
+
+    `;
+
+
+    list.appendChild(div);
+
+  });
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function adminLogout() {
+
+  await supabaseClient.auth.signOut();
+
+  document.getElementById("adminPanel")
+    .classList.add("hidden");
+
+  document.getElementById("home")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showRegister() {
+
+  document.getElementById("home")
+    .classList.add("hidden");
+
+  document.getElementById("adminLogin")
+    .classList.add("hidden");
+
+  document.getElementById("adminPanel")
+    .classList.add("hidden");
+
+  document.getElementById("register")
+    .classList.remove("hidden");
+
+}
+
 
 function goHome() {
-  document.getElementById("register").classList.add("hidden");
-  document.getElementById("home").classList.remove("hidden");
+
+  document.getElementById("register")
+    .classList.add("hidden");
+
+  document.getElementById("adminLogin")
+    .classList.add("hidden");
+
+  document.getElementById("adminPanel")
+    .classList.add("hidden");
+
+  document.getElementById("home")
+    .classList.remove("hidden");
+
 }
 
+
 function showMessage(message) {
+
   alert(message);
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHTML(value) {
+
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 </script>
