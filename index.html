@@ -409,7 +409,8 @@ async function adminLogin() {
 
   const email =
     document.getElementById("adminEmail")
-    .value.trim();
+    .value.trim()
+    .toLowerCase();
 
   const password =
     document.getElementById("adminPassword")
@@ -426,6 +427,8 @@ async function adminLogin() {
   }
 
 
+  /* LOGIN SUPABASE */
+
   const { data, error } =
     await supabaseClient.auth.signInWithPassword({
 
@@ -438,7 +441,7 @@ async function adminLogin() {
 
   if (error) {
 
-    console.error(error);
+    console.error("LOGIN ERROR:", error);
 
     alert(
       "❌ Email au password si sahihi."
@@ -448,19 +451,44 @@ async function adminLogin() {
   }
 
 
-  const userEmail =
-    data.user.email;
+  /* PATA EMAIL YA MTUMIAJI */
 
+  const userEmail =
+    data.user.email
+    .trim()
+    .toLowerCase();
+
+
+  /* CHEKI KWENYE ADMINS */
 
   const { data: admin, error: adminError } =
     await supabaseClient
     .from("admins")
     .select("email")
-    .eq("email", userEmail)
+    .ilike("email", userEmail)
+    .limit(1)
     .maybeSingle();
 
 
-  if (adminError || !admin) {
+  if (adminError) {
+
+    console.error(
+      "ADMIN CHECK ERROR:",
+      adminError
+    );
+
+    await supabaseClient.auth.signOut();
+
+    alert(
+      "❌ Tatizo la kuangalia Admin: " +
+      adminError.message
+    );
+
+    return;
+  }
+
+
+  if (!admin) {
 
     await supabaseClient.auth.signOut();
 
@@ -471,6 +499,8 @@ async function adminLogin() {
     return;
   }
 
+
+  /* INGIA ADMIN PANEL */
 
   document.getElementById("adminLogin")
     .classList.add("hidden");
