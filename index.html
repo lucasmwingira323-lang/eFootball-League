@@ -54,6 +54,7 @@
       color: white;
       font-size: 17px;
       margin-top: 10px;
+      cursor: pointer;
     }
 
     input {
@@ -96,6 +97,10 @@
 
     .logout {
       background: #b00020;
+    }
+
+    .approve {
+      background: #075e2b;
     }
 
     .hidden {
@@ -427,8 +432,6 @@ async function adminLogin() {
   }
 
 
-  /* LOGIN SUPABASE */
-
   const { data, error } =
     await supabaseClient.auth.signInWithPassword({
 
@@ -451,15 +454,11 @@ async function adminLogin() {
   }
 
 
-  /* PATA EMAIL YA MTUMIAJI */
-
   const userEmail =
     data.user.email
     .trim()
     .toLowerCase();
 
-
-  /* CHEKI KWENYE ADMINS */
 
   const { data: admin, error: adminError } =
     await supabaseClient
@@ -499,8 +498,6 @@ async function adminLogin() {
     return;
   }
 
-
-  /* INGIA ADMIN PANEL */
 
   document.getElementById("adminLogin")
     .classList.add("hidden");
@@ -600,6 +597,21 @@ async function loadPlayers() {
       <strong>Akaunti yake:</strong>
       ${player.own_account ? "✅ Ndiyo" : "❌ Hapana"}
 
+      <br><br>
+
+      ${
+        player.status === "pending"
+        ? `
+          <button
+            class="approve"
+            onclick="approvePlayer(${player.id})"
+          >
+            ✅ KUBALI MCHEZAJI
+          </button>
+        `
+        : "✅ Mchezaji amekubaliwa"
+      }
+
     `;
 
 
@@ -607,6 +619,46 @@ async function loadPlayers() {
 
   });
 
+}
+
+
+/* =========================
+   APPROVE PLAYER
+========================= */
+
+async function approvePlayer(playerId) {
+
+  const { error } =
+    await supabaseClient
+    .from("players")
+    .update({
+      status: "approved"
+    })
+    .eq("id", playerId);
+
+
+  if (error) {
+
+    console.error(
+      "APPROVE ERROR:",
+      error
+    );
+
+    alert(
+      "❌ Imeshindikana kumkubali mchezaji: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  alert(
+    "✅ Mchezaji amekubaliwa!"
+  );
+
+
+  loadPlayers();
 }
 
 
