@@ -95,12 +95,12 @@
       color: #075e2b;
     }
 
-    .logout {
-      background: #b00020;
-    }
-
     .approve {
       background: #075e2b;
+    }
+
+    .logout {
+      background: #b00020;
     }
 
     .hidden {
@@ -327,7 +327,9 @@ async function submitRegistration() {
 
   if (!playerName || !username || !whatsapp) {
 
-    alert("⚠️ Tafadhali jaza taarifa zote.");
+    alert(
+      "⚠️ Tafadhali jaza taarifa zote."
+    );
 
     return;
   }
@@ -444,7 +446,10 @@ async function adminLogin() {
 
   if (error) {
 
-    console.error("LOGIN ERROR:", error);
+    console.error(
+      "LOGIN ERROR:",
+      error
+    );
 
     alert(
       "❌ Email au password si sahihi."
@@ -609,7 +614,9 @@ async function loadPlayers() {
             ✅ KUBALI MCHEZAJI
           </button>
         `
-        : "✅ Mchezaji amekubaliwa"
+        : `
+          <strong>✅ Mchezaji amekubaliwa</strong>
+        `
       }
 
     `;
